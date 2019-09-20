@@ -12,5 +12,6 @@ namespace MediaWeb.Domain.Serie
         public string Beschijving { get; set; }
         public bool Zichtbaar { get; set; }
         public ICollection<SerieGenre> SerieGenre { get; set; }
+
     }
 }

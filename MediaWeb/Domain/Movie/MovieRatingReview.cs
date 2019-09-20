@@ -15,5 +15,6 @@ namespace MediaWeb.Domain.Movie
 
         public int Rating { get; set; }
         public string Review { get; set; }
+        public bool Zichtbaar { get; set; } = true;
     }
 }

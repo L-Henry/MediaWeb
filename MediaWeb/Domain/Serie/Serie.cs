@@ -13,7 +13,7 @@ namespace MediaWeb.Domain.Serie
         public ICollection<SeriesEpisodes> SeriesEpisodes { get; set; }
         public ICollection<SerieRatingReview> SerieRatingReview { get; set; }
         public byte[] Foto { get; set; }
-        public ICollection<SerieGenre> SerieGenres { get; set; }
-        public bool Zichtbaar { get; set; }
+        public ICollection<GenreSerieGenre> SerieGenres { get; set; }
+        public bool Zichtbaar { get; set; } = true;
     }
 }

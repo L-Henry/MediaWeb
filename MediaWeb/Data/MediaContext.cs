@@ -24,6 +24,7 @@ namespace MediaWeb.Data
         public DbSet<UserMovieFav> UserMovieFav { get; set; }
         public DbSet<UserMovieGezienStatus> UserMovieGezienStatus { get; set; }
         public DbSet<UserMoviePlaylist> UserMoviePlaylist { get; set; }
+        public DbSet<MovieRegisseurCombo> MovieRegisseurCombo { get; set; }
 
 
         public DbSet<GenreMusicGenre> GenreMusicGenre { get; set; }
@@ -48,7 +49,8 @@ namespace MediaWeb.Data
         public DbSet<UserPodcastFav> UserPodcastFav { get; set; }
         public DbSet<PodcastRatingReview> PodcastRatingReview { get; set; }
         public DbSet<PodcastOnderwerpPodcast> PodcastOnderwerpPodcast { get; set; }
-        public DbSet<PodcastInPodcastSerie> PodcastInPodcastSerie { get; set; }
+        public DbSet<PodcastPlaylist> PodcastPlaylist { get; set; }
+        public DbSet<UserPodcastPlaylist> UserPodcastPlaylist { get; set; }
 
 
         public DbSet<GenreSerieGenre> GenreSerieGenre { get; set; }
@@ -61,6 +63,10 @@ namespace MediaWeb.Data
         public DbSet<SeriesEpisodesInSeries> SeriesEpisodesInSeries { get; set; }
         public DbSet<SeriesEpisodeRatingReview> SeriesEpisodeRatingReview { get; set; }
         public DbSet<UserSeriesEpisodesGezienStatus> UserSeriesEpisodesGezienStatus { get; set; }
+        public DbSet<UserSeriesEpisodesPlaylist> UserSeriesEpisodesPlaylist { get; set; }
+        public DbSet<SeriesEpisodesPlaylist> SeriesEpisodesPlaylist { get; set; }
+
+
 
 
         public MediaContext(DbContextOptions<MediaContext> options) : base(options)
@@ -75,6 +81,7 @@ namespace MediaWeb.Data
             modelBuilder.Entity<GenreMovieGenre>().HasKey(mg => new { mg.MovieId, mg.MovieGenreId });
             modelBuilder.Entity<UserMovieFav>().HasKey(mg => new { mg.MovieId, mg.UserId });
             modelBuilder.Entity<UserMoviePlaylist>().HasKey(mg => new { mg.MoviePlaylistId, mg.UserId });
+            modelBuilder.Entity<MovieRegisseurCombo>().HasKey(mg => new { mg.MovieId, mg.MovieRegisseurId });
 
             modelBuilder.Entity<UserMusicBesluisterdStatus>().HasKey(umgs => new { umgs.MusicId, umgs.UserId });
             modelBuilder.Entity<MusicRatingReview>().HasKey(rr => new { rr.MusicId, rr.UserId });
@@ -86,7 +93,7 @@ namespace MediaWeb.Data
             modelBuilder.Entity<UserPodcastBeluisterdStatus>().HasKey(umgs => new { umgs.PodcastId, umgs.UserId });
             modelBuilder.Entity<UserPodcastFav>().HasKey(umgs => new { umgs.PodcastId, umgs.UserId });
             modelBuilder.Entity<PodcastOnderwerpPodcast>().HasKey(umgs => new { umgs.PodcastId, umgs.PodcastOnderwerpId });
-            modelBuilder.Entity<PodcastInPodcastSerie>().HasKey(umgs => new { umgs.PodcastId, umgs.PodcastSerieId });
+            modelBuilder.Entity<UserPodcastPlaylist>().HasKey(umgs => new { umgs.PodcastPlaylistId, umgs.UserId });
 
             modelBuilder.Entity<SerieRatingReview>().HasKey(rr => new { rr.SerieId, rr.UserId });
             modelBuilder.Entity<UserSerieGezienStatus>().HasKey(umgs => new { umgs.SerieGezienStatus, umgs.UserId });
@@ -94,6 +101,8 @@ namespace MediaWeb.Data
             modelBuilder.Entity<SeriesEpisodeRatingReview>().HasKey(umgs => new { umgs.SeriesEpisodesId, umgs.UserId });
             modelBuilder.Entity<GenreSerieGenre>().HasKey(umgs => new { umgs.SerieId, umgs.SerieGenreId });
             modelBuilder.Entity<UserSeriesEpisodesGezienStatus>().HasKey(umgs => new { umgs.UserId, umgs.SeriesEpisodeId });
+            modelBuilder.Entity<UserSeriesEpisodesPlaylist>().HasKey(umgs => new { umgs.UserId, umgs.SeriesEpisodesPlaylistId });
+
 
 
             base.OnModelCreating(modelBuilder);

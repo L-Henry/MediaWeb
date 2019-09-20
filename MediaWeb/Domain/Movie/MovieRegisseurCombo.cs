@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace MediaWeb.Domain.Movie
 {
-    public class MoviePlaylist
+    public class MovieRegisseurCombo
     {
-        public int Id { get; set; }
-        public string Naam { get; set; }
-        
+        public int MovieRegisseurId { get; set; }
+
+        public int MovieId { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace MediaWeb.Domain.Music
     {
         public int Id { get; set; }
         public int Speelduur { get; set; }
-        public ICollection<MusicGenre> MuziekGenres { get; set; }
+        public ICollection<GenreMusicGenre> MuziekGenres { get; set; }
         public int MusicArtistId { get; set; }
         public MusicArtist MusicArtist { get; set; }
         public byte[] CoverFoto { get; set; }

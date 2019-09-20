@@ -11,5 +11,7 @@ namespace MediaWeb.Domain.Podcast
         public string UserId { get; set; }
         public int Rating { get; set; }
         public string Review { get; set; }
+
+        public bool Zichtbaar { get; set; } = true;
     }
 }

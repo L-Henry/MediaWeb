@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MediaWeb.Domain.Movie
+namespace MediaWeb.Domain.Podcast
 {
-    public class UserMoviePlaylist
+    public class UserPodcastPlaylist
     {
-        public int MovieId { get; set; }
-
+        public int PodcastId { get; set; }
         public string UserId { get; set; }
 
-        public int MoviePlaylistId { get; set; }
+        public int PodcastPlaylistId { get; set; }
         public bool Publiek { get; set; } = true;
         public bool Zichtbaar { get; set; } = true;
 

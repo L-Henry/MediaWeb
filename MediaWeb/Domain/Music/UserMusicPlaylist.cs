@@ -11,6 +11,8 @@ namespace MediaWeb.Domain.Music
         public int MusicId { get; set; }
         public string UserId { get; set; }
         public int MusicPlaylistId { get; set; }
+        public bool Publiek { get; set; } = true;
+        public bool Zichtbaar { get; set; } = true;
 
     }
 }

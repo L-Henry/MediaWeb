@@ -13,5 +13,7 @@ namespace MediaWeb.Domain.Music
 
         public int Rating { get; set; }
         public string Review { get; set; }
+        
+        public bool Zichtbaar { get; set; } = true;
     }
 }

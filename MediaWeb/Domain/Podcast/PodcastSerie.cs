@@ -10,7 +10,7 @@ namespace MediaWeb.Domain.Podcast
         public int Id { get; set; }
         public string Titel { get; set; }
         public ICollection<Podcast> Podcasts { get; set; }
-        public bool Zictbaar { get; set; }
+        public bool Zichtbaar { get; set; } = true;
 
     }
 }

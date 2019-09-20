@@ -14,8 +14,9 @@ namespace MediaWeb.Domain.Podcast
 
         public int Speelduur { get; set; }
         public DateTime Datum { get; set; }
-        public ICollection<PodcastOnderwerpen> Onderwerpen { get; set; }
-
+        public ICollection<PodcastOnderwerpPodcast> Onderwerpen { get; set; }
+        public int PodcastSerieId { get; set; }
+        public PodcastSerie PostcastSerie { get; set; }
         public bool Zichtbaar { get; set; } = true;
 
     }
