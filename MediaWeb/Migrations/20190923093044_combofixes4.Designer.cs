@@ -4,14 +4,16 @@ using MediaWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MediaWeb.Migrations
 {
     [DbContext(typeof(MediaContext))]
-    partial class MediaContextModelSnapshot : ModelSnapshot
+    [Migration("20190923093044_combofixes4")]
+    partial class combofixes4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -583,8 +585,6 @@ namespace MediaWeb.Migrations
 
                     b.Property<string>("Review");
 
-                    b.Property<bool>("Zichtbaar");
-
                     b.HasKey("SerieId", "UserId");
 
                     b.ToTable("SerieRatingReview");
@@ -613,7 +613,7 @@ namespace MediaWeb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Beschrijving");
+                    b.Property<string>("Beschijving");
 
                     b.Property<string>("Titel");
 
@@ -669,13 +669,13 @@ namespace MediaWeb.Migrations
 
             modelBuilder.Entity("MediaWeb.Domain.SerieDomain.UserSerieGezienStatus", b =>
                 {
-                    b.Property<int>("SerieId");
+                    b.Property<int>("SerieGezienStatus");
 
                     b.Property<string>("UserId");
 
-                    b.Property<int>("SerieGezienStatusId");
+                    b.Property<int>("SerieId");
 
-                    b.HasKey("SerieId", "UserId");
+                    b.HasKey("SerieGezienStatus", "UserId");
 
                     b.ToTable("UserSerieGezienStatus");
                 });
@@ -685,8 +685,6 @@ namespace MediaWeb.Migrations
                     b.Property<string>("UserId");
 
                     b.Property<int>("SeriesEpisodeId");
-
-                    b.Property<int>("SerieGezienStatusId");
 
                     b.HasKey("UserId", "SeriesEpisodeId");
 

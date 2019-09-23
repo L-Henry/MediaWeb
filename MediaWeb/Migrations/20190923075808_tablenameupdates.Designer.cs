@@ -4,14 +4,16 @@ using MediaWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MediaWeb.Migrations
 {
     [DbContext(typeof(MediaContext))]
-    partial class MediaContextModelSnapshot : ModelSnapshot
+    [Migration("20190923075808_tablenameupdates")]
+    partial class tablenameupdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,30 +87,9 @@ namespace MediaWeb.Migrations
 
                     b.Property<string>("Naam");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("MoviePlaylist");
-                });
-
-            modelBuilder.Entity("MediaWeb.Domain.MovieDomain.MoviePlaylistCombo", b =>
-                {
-                    b.Property<int>("MoviePlaylistId");
-
-                    b.Property<int>("MovieId");
-
-                    b.Property<bool>("Publiek");
-
-                    b.Property<bool>("Zichtbaar");
-
-                    b.HasKey("MoviePlaylistId", "MovieId");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("MoviePlaylistCombo");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.MovieDomain.MovieRatingReview", b =>
@@ -174,6 +155,25 @@ namespace MediaWeb.Migrations
                     b.HasKey("MovieId", "UserId");
 
                     b.ToTable("UserMovieGezienStatus");
+                });
+
+            modelBuilder.Entity("MediaWeb.Domain.MovieDomain.UserMoviePlaylist", b =>
+                {
+                    b.Property<int>("MoviePlaylistId");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<int>("MovieId");
+
+                    b.Property<bool>("Publiek");
+
+                    b.Property<bool>("Zichtbaar");
+
+                    b.HasKey("MoviePlaylistId", "UserId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("UserMoviePlaylist");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.MusicDomain.GenreMusicCombo", b =>
@@ -272,30 +272,9 @@ namespace MediaWeb.Migrations
 
                     b.Property<string>("Naam");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("MusicPlaylist");
-                });
-
-            modelBuilder.Entity("MediaWeb.Domain.MusicDomain.MusicPlaylistCombo", b =>
-                {
-                    b.Property<int>("MusicPlaylistId");
-
-                    b.Property<int>("MusicId");
-
-                    b.Property<bool>("Publiek");
-
-                    b.Property<bool>("Zichtbaar");
-
-                    b.HasKey("MusicPlaylistId", "MusicId");
-
-                    b.HasIndex("MusicId");
-
-                    b.ToTable("MusicPlaylistCombo");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.MusicDomain.MusicRatingReview", b =>
@@ -337,6 +316,25 @@ namespace MediaWeb.Migrations
                     b.HasKey("MusicId", "UserId");
 
                     b.ToTable("UserMusicFav");
+                });
+
+            modelBuilder.Entity("MediaWeb.Domain.MusicDomain.UserMusicPlaylist", b =>
+                {
+                    b.Property<int>("MusicPlaylistId");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<int>("MusicId");
+
+                    b.Property<bool>("Publiek");
+
+                    b.Property<bool>("Zichtbaar");
+
+                    b.HasKey("MusicPlaylistId", "UserId");
+
+                    b.HasIndex("MusicId");
+
+                    b.ToTable("UserMusicPlaylist");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.PodcastDomain.Podcast", b =>
@@ -424,28 +422,9 @@ namespace MediaWeb.Migrations
 
                     b.Property<string>("Titel");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("PodcastPlaylist");
-                });
-
-            modelBuilder.Entity("MediaWeb.Domain.PodcastDomain.PodcastPlaylistCombo", b =>
-                {
-                    b.Property<int>("PodcastPlaylistId");
-
-                    b.Property<int>("PodcastId");
-
-                    b.Property<bool>("Publiek");
-
-                    b.Property<bool>("Zichtbaar");
-
-                    b.HasKey("PodcastPlaylistId", "PodcastId");
-
-                    b.ToTable("PodcastPlaylistCombo");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.PodcastDomain.PodcastRatingReview", b =>
@@ -480,19 +459,6 @@ namespace MediaWeb.Migrations
                     b.ToTable("PodcastSerie");
                 });
 
-            modelBuilder.Entity("MediaWeb.Domain.PodcastDomain.PodcastSerieCombo", b =>
-                {
-                    b.Property<int>("PodcastId");
-
-                    b.Property<int>("PodcastSerieId");
-
-                    b.HasKey("PodcastId", "PodcastSerieId");
-
-                    b.HasIndex("PodcastSerieId");
-
-                    b.ToTable("PodcastSerieCombo");
-                });
-
             modelBuilder.Entity("MediaWeb.Domain.PodcastDomain.UserPodcastBeluisterdStatus", b =>
                 {
                     b.Property<int>("PodcastId");
@@ -515,6 +481,23 @@ namespace MediaWeb.Migrations
                     b.HasKey("PodcastId", "UserId");
 
                     b.ToTable("UserPodcastFav");
+                });
+
+            modelBuilder.Entity("MediaWeb.Domain.PodcastDomain.UserPodcastPlaylist", b =>
+                {
+                    b.Property<int>("PodcastPlaylistId");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<int>("PodcastId");
+
+                    b.Property<bool>("Publiek");
+
+                    b.Property<bool>("Zichtbaar");
+
+                    b.HasKey("PodcastPlaylistId", "UserId");
+
+                    b.ToTable("UserPodcastPlaylist");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.SerieDomain.GenreSerieCombo", b =>
@@ -555,7 +538,11 @@ namespace MediaWeb.Migrations
 
                     b.Property<string>("Naam");
 
+                    b.Property<int?>("SeriesEpisodesId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SeriesEpisodesId");
 
                     b.ToTable("SerieGenre");
                 });
@@ -582,8 +569,6 @@ namespace MediaWeb.Migrations
                     b.Property<int>("Rating");
 
                     b.Property<string>("Review");
-
-                    b.Property<bool>("Zichtbaar");
 
                     b.HasKey("SerieId", "UserId");
 
@@ -613,7 +598,9 @@ namespace MediaWeb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Beschrijving");
+                    b.Property<string>("Beschijving");
+
+                    b.Property<int?>("SerieId");
 
                     b.Property<string>("Titel");
 
@@ -621,10 +608,12 @@ namespace MediaWeb.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SerieId");
+
                     b.ToTable("SeriesEpisodes");
                 });
 
-            modelBuilder.Entity("MediaWeb.Domain.SerieDomain.SeriesEpisodesCombo", b =>
+            modelBuilder.Entity("MediaWeb.Domain.SerieDomain.SeriesEpisodesInSeries", b =>
                 {
                     b.Property<int>("SerieId");
 
@@ -632,7 +621,7 @@ namespace MediaWeb.Migrations
 
                     b.HasKey("SerieId", "SeriesEpisodeId");
 
-                    b.ToTable("SeriesEpisodesCombo");
+                    b.ToTable("SeriesEpisodesInSeries");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.SerieDomain.SeriesEpisodesPlaylist", b =>
@@ -643,39 +632,20 @@ namespace MediaWeb.Migrations
 
                     b.Property<string>("Titel");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("SeriesEpisodesPlaylist");
                 });
 
-            modelBuilder.Entity("MediaWeb.Domain.SerieDomain.SeriesEpisodesPlaylistCombo", b =>
-                {
-                    b.Property<int>("SeriesEpisodeId");
-
-                    b.Property<int>("SeriesEpisodesPlaylistId");
-
-                    b.Property<bool>("Publiek");
-
-                    b.Property<bool>("Zichtbaar");
-
-                    b.HasKey("SeriesEpisodeId", "SeriesEpisodesPlaylistId");
-
-                    b.ToTable("SeriesEpisodesPlaylistCombo");
-                });
-
             modelBuilder.Entity("MediaWeb.Domain.SerieDomain.UserSerieGezienStatus", b =>
                 {
-                    b.Property<int>("SerieId");
+                    b.Property<int>("SerieGezienStatus");
 
                     b.Property<string>("UserId");
 
-                    b.Property<int>("SerieGezienStatusId");
+                    b.Property<int>("SerieId");
 
-                    b.HasKey("SerieId", "UserId");
+                    b.HasKey("SerieGezienStatus", "UserId");
 
                     b.ToTable("UserSerieGezienStatus");
                 });
@@ -686,11 +656,26 @@ namespace MediaWeb.Migrations
 
                     b.Property<int>("SeriesEpisodeId");
 
-                    b.Property<int>("SerieGezienStatusId");
-
                     b.HasKey("UserId", "SeriesEpisodeId");
 
                     b.ToTable("UserSeriesEpisodesGezienStatus");
+                });
+
+            modelBuilder.Entity("MediaWeb.Domain.SerieDomain.UserSeriesEpisodesPlaylist", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<int>("SeriesEpisodesPlaylistId");
+
+                    b.Property<bool>("Publiek");
+
+                    b.Property<int>("SeriesEpisodeId");
+
+                    b.Property<bool>("Zichtbaar");
+
+                    b.HasKey("UserId", "SeriesEpisodesPlaylistId");
+
+                    b.ToTable("UserSeriesEpisodesPlaylist");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -866,21 +851,6 @@ namespace MediaWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MediaWeb.Domain.MovieDomain.MoviePlaylist", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("MediaWeb.Domain.MovieDomain.MoviePlaylistCombo", b =>
-                {
-                    b.HasOne("MediaWeb.Domain.MovieDomain.Movie")
-                        .WithMany("UserMoviePlaylists")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("MediaWeb.Domain.MovieDomain.MovieRatingReview", b =>
                 {
                     b.HasOne("MediaWeb.Domain.MovieDomain.Movie")
@@ -913,6 +883,14 @@ namespace MediaWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MediaWeb.Domain.MovieDomain.UserMoviePlaylist", b =>
+                {
+                    b.HasOne("MediaWeb.Domain.MovieDomain.Movie")
+                        .WithMany("UserMoviePlaylists")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MediaWeb.Domain.MusicDomain.GenreMusicCombo", b =>
                 {
                     b.HasOne("MediaWeb.Domain.MusicDomain.Music")
@@ -931,21 +909,6 @@ namespace MediaWeb.Migrations
                     b.HasOne("MediaWeb.Domain.MusicDomain.MusicArtist", "MusicArtist")
                         .WithMany()
                         .HasForeignKey("MusicArtistId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MediaWeb.Domain.MusicDomain.MusicPlaylist", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("MediaWeb.Domain.MusicDomain.MusicPlaylistCombo", b =>
-                {
-                    b.HasOne("MediaWeb.Domain.MusicDomain.Music")
-                        .WithMany("UserMusicPlaylists")
-                        .HasForeignKey("MusicId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -973,6 +936,14 @@ namespace MediaWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MediaWeb.Domain.MusicDomain.UserMusicPlaylist", b =>
+                {
+                    b.HasOne("MediaWeb.Domain.MusicDomain.Music")
+                        .WithMany("UserMusicPlaylists")
+                        .HasForeignKey("MusicId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MediaWeb.Domain.PodcastDomain.Podcast", b =>
                 {
                     b.HasOne("MediaWeb.Domain.PodcastDomain.PodcastMaker", "PodcastMaker")
@@ -981,7 +952,7 @@ namespace MediaWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MediaWeb.Domain.PodcastDomain.PodcastSerie", "PostcastSerie")
-                        .WithMany()
+                        .WithMany("Podcasts")
                         .HasForeignKey("PodcastSerieId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -994,27 +965,19 @@ namespace MediaWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MediaWeb.Domain.PodcastDomain.PodcastPlaylist", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("MediaWeb.Domain.PodcastDomain.PodcastSerieCombo", b =>
-                {
-                    b.HasOne("MediaWeb.Domain.PodcastDomain.PodcastSerie")
-                        .WithMany("Podcasts")
-                        .HasForeignKey("PodcastSerieId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("MediaWeb.Domain.SerieDomain.GenreSerieCombo", b =>
                 {
                     b.HasOne("MediaWeb.Domain.SerieDomain.Serie")
                         .WithMany("SerieGenres")
                         .HasForeignKey("SerieId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MediaWeb.Domain.SerieDomain.SerieGenre", b =>
+                {
+                    b.HasOne("MediaWeb.Domain.SerieDomain.SeriesEpisodes")
+                        .WithMany("SerieGenre")
+                        .HasForeignKey("SeriesEpisodesId");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.SerieDomain.SerieRatingReview", b =>
@@ -1025,19 +988,11 @@ namespace MediaWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MediaWeb.Domain.SerieDomain.SeriesEpisodesCombo", b =>
+            modelBuilder.Entity("MediaWeb.Domain.SerieDomain.SeriesEpisodes", b =>
                 {
                     b.HasOne("MediaWeb.Domain.SerieDomain.Serie")
                         .WithMany("SeriesEpisodes")
-                        .HasForeignKey("SerieId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MediaWeb.Domain.SerieDomain.SeriesEpisodesPlaylist", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("SerieId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

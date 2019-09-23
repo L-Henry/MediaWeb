@@ -1,20 +1,23 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using MediaWeb.Models;
 
-namespace MediaWeb.Controllers
+namespace MediaWeb.Controllers.MovieControllers
 {
-    public class HomeController : Controller
+    public class MovieController : Controller
     {
+
+
+
+
+
         public IActionResult Index()
         {
             return View();
         }
 
-       
+
     }
 }

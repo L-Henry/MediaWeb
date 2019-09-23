@@ -4,14 +4,16 @@ using MediaWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MediaWeb.Migrations
 {
     [DbContext(typeof(MediaContext))]
-    partial class MediaContextModelSnapshot : ModelSnapshot
+    [Migration("20190923092745_combofixes2")]
+    partial class combofixes2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -445,7 +447,7 @@ namespace MediaWeb.Migrations
 
                     b.HasKey("PodcastPlaylistId", "PodcastId");
 
-                    b.ToTable("PodcastPlaylistCombo");
+                    b.ToTable("UserPodcastPlaylist");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.PodcastDomain.PodcastRatingReview", b =>
@@ -523,7 +525,11 @@ namespace MediaWeb.Migrations
 
                     b.Property<int>("SerieGenreId");
 
+                    b.Property<int?>("SeriesEpisodesId");
+
                     b.HasKey("SerieId", "SerieGenreId");
+
+                    b.HasIndex("SeriesEpisodesId");
 
                     b.ToTable("GenreSerieCombo");
                 });
@@ -583,8 +589,6 @@ namespace MediaWeb.Migrations
 
                     b.Property<string>("Review");
 
-                    b.Property<bool>("Zichtbaar");
-
                     b.HasKey("SerieId", "UserId");
 
                     b.ToTable("SerieRatingReview");
@@ -613,7 +617,7 @@ namespace MediaWeb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Beschrijving");
+                    b.Property<string>("Beschijving");
 
                     b.Property<string>("Titel");
 
@@ -664,18 +668,18 @@ namespace MediaWeb.Migrations
 
                     b.HasKey("SeriesEpisodeId", "SeriesEpisodesPlaylistId");
 
-                    b.ToTable("SeriesEpisodesPlaylistCombo");
+                    b.ToTable("UserSeriesEpisodesPlaylist");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.SerieDomain.UserSerieGezienStatus", b =>
                 {
-                    b.Property<int>("SerieId");
+                    b.Property<int>("SerieGezienStatus");
 
                     b.Property<string>("UserId");
 
-                    b.Property<int>("SerieGezienStatusId");
+                    b.Property<int>("SerieId");
 
-                    b.HasKey("SerieId", "UserId");
+                    b.HasKey("SerieGezienStatus", "UserId");
 
                     b.ToTable("UserSerieGezienStatus");
                 });
@@ -685,8 +689,6 @@ namespace MediaWeb.Migrations
                     b.Property<string>("UserId");
 
                     b.Property<int>("SeriesEpisodeId");
-
-                    b.Property<int>("SerieGezienStatusId");
 
                     b.HasKey("UserId", "SeriesEpisodeId");
 
@@ -1015,6 +1017,10 @@ namespace MediaWeb.Migrations
                         .WithMany("SerieGenres")
                         .HasForeignKey("SerieId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MediaWeb.Domain.SerieDomain.SeriesEpisodes")
+                        .WithMany("SerieGenre")
+                        .HasForeignKey("SeriesEpisodesId");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.SerieDomain.SerieRatingReview", b =>
