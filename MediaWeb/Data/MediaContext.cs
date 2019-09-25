@@ -105,10 +105,7 @@ namespace MediaWeb.Data
             modelBuilder.Entity<UserSeriesEpisodesGezienStatus>().HasKey(umgs => new { umgs.UserId, umgs.SeriesEpisodeId });
             modelBuilder.Entity<SeriesEpisodesPlaylistCombo>().HasKey(umgs => new { umgs.SeriesEpisodeId, umgs.SeriesEpisodesPlaylistId });
 
-
-
             base.OnModelCreating(modelBuilder);
         }
-
     }
 }

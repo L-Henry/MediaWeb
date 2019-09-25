@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediaWeb.Data;
 using MediaWeb.Domain.MovieDomain;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediaWeb.Services.MovieServices
 {
@@ -26,11 +27,22 @@ namespace MediaWeb.Services.MovieServices
             return _context.MovieGenres.SingleOrDefault(x => x.Id == id);
         }
 
+        public void AssignGenre(Movie movie, string genre)
+        {
+            _context.GenreMovieCombo.Add(new GenreMovieCombo
+            {
+                MovieId = movie.Id,
+                MovieGenreId = _context.MovieGenres.SingleOrDefault(g=>g.Naam == genre).Id
+            });
+            _context.SaveChanges();
+        }
 
-        public void Insert(MovieGenre genre)
+
+        public MovieGenre Insert(MovieGenre genre)
         {
             _context.MovieGenres.Add(genre);
             _context.SaveChanges();
+            return genre;
         }
 
 
@@ -42,6 +54,11 @@ namespace MediaWeb.Services.MovieServices
                 genreToEdit.Naam = genre.Naam;
                 _context.SaveChanges();
             }
+        }
+
+        public IEnumerable<MovieGenre> GetGenresByMovieId(int id)
+        {
+            return _context.MovieGenres.Where(r => r.Id == _context.GenreMovieCombo.SingleOrDefault(x => x.MovieId == id).MovieGenreId);
         }
 
         public void Delete(int id)

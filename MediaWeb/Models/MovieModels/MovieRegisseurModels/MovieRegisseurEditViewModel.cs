@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MediaWeb.Models.MovieModels.MovieGenreModels
+namespace MediaWeb.Models.MovieModels.MovieRegisseurModels
 {
-    public class MovieGenreEditViewModel
+    public class MovieRegisseurEditViewModel
     {
         public int Id { get; set; }
 

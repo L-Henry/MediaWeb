@@ -41,6 +41,9 @@ namespace MediaWeb
                 .AddEntityFrameworkStores<MediaContext>();
 
             services.AddTransient<IMovieGenreService, MovieGenreService>();
+            services.AddTransient<IMovieRegisseurService, MovieRegisseurService>();
+            services.AddTransient<IMovieService, MovieService>();
+
 
 
 

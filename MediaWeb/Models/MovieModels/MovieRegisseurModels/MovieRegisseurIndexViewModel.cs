@@ -4,13 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MediaWeb.Models.MovieModels.MovieGenreModels
+namespace MediaWeb.Models.MovieModels.MovieRegisseurModels
 {
-    public class MovieGenreCreateViewModel
+    public class MovieRegisseurIndexViewModel
     {
-        [Required(ErrorMessage = "Naam is nodig")]
-        [MinLength(3)]
+        
         public string Naam { get; set; }
-
+        public IEnumerable<MovieRegisseurListViewModel> ListVM { get; set; }
     }
 }

@@ -9,9 +9,13 @@ namespace MediaWeb.Services.MovieServices
     public interface IMovieGenreService
     {
         IEnumerable<MovieGenre> Get();
+        
         MovieGenre Get(int id);
-        void Insert(MovieGenre genre);
+        MovieGenre Insert(MovieGenre genre);
         void Edit(int id, MovieGenre genre);
         void Delete(int id);
+        void AssignGenre(Movie movie, string    genre);
+        IEnumerable<MovieGenre> GetGenresByMovieId(int id);
+
     }
 }
