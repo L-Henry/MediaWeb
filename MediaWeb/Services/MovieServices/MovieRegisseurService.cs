@@ -73,7 +73,10 @@ namespace MediaWeb.Services.MovieServices
 
         public IEnumerable<MovieRegisseur> GetRegisseursByMovieId(int id)
         {
-            return _context.MovieRegisseur.Where(r => r.Id == _context.MovieRegisseurCombo.SingleOrDefault(x => x.MovieId == id).MovieRegisseurId);  
+            var GenreIds = _context.MovieRegisseurCombo.Where(x => x.MovieId == id).Select(x => x.MovieRegisseurId).ToList();
+            var result = _context.MovieRegisseur.Where(x => GenreIds.Contains(x.Id));
+
+            return result;
         }
 
         public MovieRegisseur Insert(MovieRegisseur regisseur)

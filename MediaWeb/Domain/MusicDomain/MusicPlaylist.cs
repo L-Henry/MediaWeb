@@ -13,5 +13,7 @@ namespace MediaWeb.Domain.MusicDomain
         public IdentityUser User { get; set; }
         public string Naam { get; set; }
 
+        public bool Publiek { get; set; } = true;
+        public bool Zichtbaar { get; set; } = true;
     }
 }

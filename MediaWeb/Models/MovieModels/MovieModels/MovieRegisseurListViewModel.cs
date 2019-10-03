@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace MediaWeb.Models.MovieModels.MovieModels
 {
-    public class MovieDeleteViewModel
+    public class MovieRegisseurListViewModel
     {
-        public int Id { get; set; }
+        public bool Checked { get; set; }
         public string Naam { get; set; }
     }
 }

@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace MediaWeb.Services.MovieServices
 {
-    interface IMovieGezienStatusService
+    public interface IMovieGezienStatusService
     {
         IEnumerable<MovieGezienStatus> Get();
+        void AssignGezienStatus(int movieId, string userId, int gezienStatus);
+
+
 
     }
 }

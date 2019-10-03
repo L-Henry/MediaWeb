@@ -58,7 +58,10 @@ namespace MediaWeb.Services.MovieServices
 
         public IEnumerable<MovieGenre> GetGenresByMovieId(int id)
         {
-            return _context.MovieGenres.Where(r => r.Id == _context.GenreMovieCombo.SingleOrDefault(x => x.MovieId == id).MovieGenreId);
+            var GenreIds = _context.GenreMovieCombo.Where(x => x.MovieId == id).Select(x => x.MovieGenreId).ToList();
+            var result = _context.MovieGenres.Where(x => GenreIds.Contains(x.Id));
+
+            return result;
         }
 
         public void Delete(int id)

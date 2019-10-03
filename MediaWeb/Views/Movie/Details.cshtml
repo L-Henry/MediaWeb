@@ -7,14 +7,14 @@
 <strong>Title</strong>
 <p>@Model.Titel</p>
 <strong>Genre</strong>
-<p>Genres: @string.Join(", ", Model.Genres)</p>
+<p>Genres: @Model.Genres</p>
 <p>Mensen die deze film gezien hebben: @Model.AantalGezien</p>
 <p>Mensen die deze film willen zien: @Model.AantalWilZien</p>
 
 @if (SignInManager.IsSignedIn(User))
 {
 
-    <form id="postForm" asp-controller="Home" asp-action="MovieDetail" method="post">
+    <form id="postForm" asp-controller="Movie" asp-action="Details" method="post">
         <div class="form-group">
             <label asp-for="HeeftGezien">Uw gezien status: </label>
             <select onchange="HeeftGezienChanged()" asp-for="HeeftGezien" asp-items="Model.HeeftGezienSelectList"></select>
@@ -33,7 +33,7 @@
         </div>
     </form>
 
-    <a asp-controller="Home" asp-action="RatingReview" asp-route-movieId="@Model.Id">Voeg review toe</a>
+    <a asp-controller="Movie" asp-action="RatingReview" asp-route-movieId="@Model.Id">Voeg review toe</a>
 }
 else
 {

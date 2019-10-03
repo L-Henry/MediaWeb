@@ -14,7 +14,7 @@ namespace MediaWeb.Services.MovieServices
         MovieGenre Insert(MovieGenre genre);
         void Edit(int id, MovieGenre genre);
         void Delete(int id);
-        void AssignGenre(Movie movie, string    genre);
+        void AssignGenre(Movie movie, string genre);
         IEnumerable<MovieGenre> GetGenresByMovieId(int id);
 
     }

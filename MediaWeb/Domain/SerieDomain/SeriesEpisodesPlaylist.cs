@@ -13,5 +13,8 @@ namespace MediaWeb.Domain.SerieDomain
         public string UserId { get; set; }
         public IdentityUser User { get; set; }
         public string Titel { get; set; }
+
+        public bool Publiek { get; set; } = true;
+        public bool Zichtbaar { get; set; } = true;
     }
 }

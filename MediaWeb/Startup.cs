@@ -43,6 +43,10 @@ namespace MediaWeb
             services.AddTransient<IMovieGenreService, MovieGenreService>();
             services.AddTransient<IMovieRegisseurService, MovieRegisseurService>();
             services.AddTransient<IMovieService, MovieService>();
+            services.AddTransient<IMovieGezienStatusService, MovieGezienStatusService>();
+            services.AddTransient<IMovieRatingReviewService, MovieRatingReviewService>();
+            services.AddTransient<IMoviePlaylistService, MoviePlaylistService>();
+
 
 
 

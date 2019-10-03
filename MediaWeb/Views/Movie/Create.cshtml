@@ -1,33 +1,53 @@
 ﻿@model MediaWeb.Models.MovieModels.MovieModels.MovieCreateViewModel
 
-<form enctype="multipart/form-data" asp-controller="Movie" asp-action="Create" method="post">
-    <div class="form-group">
-        <label asp-for="Titel"></label>
-        <input class="form-control" asp-for="Titel" />
-        <span class="text-danger" asp-validation-for="Titel"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Speelduur"></label>
-        <input class="form-control" asp-for="Speelduur" />
-        <span class="text-danger" asp-validation-for="Speelduur"></span>
-    </div>
-    @*<div class="form-group">
-        <label asp-for="Foto"></label>
-        <input class="form-control" type="file" asp-for="Foto" />
-        <span class="text-danger" asp-validation-for="Foto"></span>
-    </div>*@
-    <div class="form-group">
-        <label asp-for="GenreList"></label>
-        @for (int i = 0; i < Model.GenreList.Count; i++)
-        {
-            <input type="checkbox" class="form-control" asp-for="GenreList[i].Checked" />@Model.GenreList[i].Naam
-            <input type="hidden" asp-for="@Model.GenreList[i].Naam" />
-        }
-        <span class="text-danger" asp-validation-for="GenreList"></span>
-    </div>
+    <form enctype="multipart/form-data" asp-controller="Movie" asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="Titel"></label>
+            <input class="form-control" asp-for="Titel" />
+            <span class="text-danger" asp-validation-for="Titel"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Regisseurs"></label>
+            <input class="form-control" id="Regisseurs" asp-for="Regisseurs" />
+            <span class="text-danger" asp-validation-for="Regisseurs"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Speelduur"></label>
+            <input class="form-control" asp-for="Speelduur" />
+            <span class="text-danger" asp-validation-for="Speelduur"></span>
+        </div>
+        @*<div class="form-group">
+            <label asp-for="Foto"></label>
+            <input class="form-control" type="file" asp-for="Foto" />
+            <span class="text-danger" asp-validation-for="Foto"></span>
+        </div>*@
+        <div class="form-group">
+            <label asp-for="GenreList"></label>
+            @for (int i = 0; i < Model.GenreList.Count; i++)
+            {
+                <input type="checkbox" class="form-control" asp-for="GenreList[i].Checked" />@Model.GenreList[i].Naam
+                <input type="hidden" asp-for="@Model.GenreList[i].Naam" />
+            }
+            <span class="text-danger" asp-validation-for="GenreList"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Beschrijving"></label>
+            <input class="form-control" asp-for="Beschrijving" />
+            <span class="text-danger" asp-validation-for="Beschrijving"></span>
+        </div>
 
-    <button class="btn btn-primary" type="submit">Create movie</button>
+        <button class="btn btn-primary" type="submit">Create movie</button>
 
-</form>
+    </form>
 
 
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+        $(function () {
+            var regisseursArr = @Html.Raw(Json.Serialize(Model.RegisseurList));
+            
+        $("#autocomplete").autocomplete({
+            source: regisseurArr
+        });
+
+      });
+    </script>

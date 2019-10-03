@@ -9,8 +9,7 @@ namespace MediaWeb.Domain.MovieDomain
     {
         public int MovieId { get; set; }
         public int MoviePlaylistId { get; set; }
-        public bool Publiek { get; set; } = true;
-        public bool Zichtbaar { get; set; } = true;
+
 
     }
 }

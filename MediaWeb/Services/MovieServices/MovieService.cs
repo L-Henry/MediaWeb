@@ -41,14 +41,26 @@ namespace MediaWeb.Services.MovieServices
 
         public IEnumerable<Movie> Get()
         {
-            return _context.Movies.Include(m=>m.RatingReviews)
-                                  .Include(m=>m.UserMovieGezienStatus);
+            return _context.Movies.Include(m => m.RatingReviews)
+                                  .Include(m => m.UserMovieGezienStatus)
+                                  .Include(m => m.UserMovieFav)
+                                  .Include(m => m.Genres)
+                                  .Include(m => m.Regisseurs)
+                                  .Include(m => m.UserMoviePlaylists);  
         }
 
         public Movie Get(int id)
         {
-            return _context.Movies.SingleOrDefault(m => m.Id == id);
+            return _context.Movies.Include(m => m.RatingReviews)
+                                  .Include(m => m.UserMovieGezienStatus)
+                                  .Include(m => m.UserMovieFav)
+                                  .Include(m => m.Genres)
+                                  .Include(m => m.Regisseurs)
+                                  .Include(m => m.UserMoviePlaylists)
+                                  .SingleOrDefault(m => m.Id == id);
         }
+
+     
 
         public IEnumerable<Movie> GetMoviesByGenreId(int genreId)
         {
@@ -59,12 +71,147 @@ namespace MediaWeb.Services.MovieServices
         {
             return _context.Movies.Where(m => m.Regisseurs.Contains(_context.MovieRegisseurCombo.SingleOrDefault(mg => mg.MovieRegisseurId == regisseurId)));
         }
+        public IEnumerable<Movie> GetMoviesByPlaylistId(int playlistId)
+        {
+            return _context.Movies.Where(m => m.UserMoviePlaylists.Contains(_context.MoviePlaylistCombo.SingleOrDefault(mg => mg.MoviePlaylistId == playlistId)));
+        }
 
         public Movie Insert(Movie movie)
         {
             _context.Movies.Add(movie);
             _context.SaveChanges();
             return movie;
+        }
+
+
+
+        public IEnumerable<Movie> GetByQuery(string titel, int gezienStatusId, int regisseurId, int ratingOrder, int genreId, string userId)
+        {
+            IQueryable<Movie> query = _context.Movies.Include(m => m.RatingReviews)
+                                                     .Include(m => m.UserMovieGezienStatus)
+                                                     .Include(m => m.UserMovieFav)
+                                                     .Include(m => m.Genres)
+                                                     .Include(m => m.Regisseurs)
+                                                     .Include(m => m.UserMoviePlaylists);
+
+            if (!string.IsNullOrEmpty(titel))
+            {
+                if (userId != null && gezienStatusId != 0)
+                {
+                    if (genreId != 0)
+                    {
+                        if (regisseurId != 0)
+                        {
+                            query = query.Where(m => m.Titel.Contains(titel)
+                                            && m.Genres.Contains(_context.GenreMovieCombo.SingleOrDefault(mg => mg.MovieGenreId == genreId))
+                                            && m.Regisseurs.Contains(_context.MovieRegisseurCombo.SingleOrDefault(mr => mr.MovieRegisseurId == regisseurId))
+                                            && m.UserMovieGezienStatus.Contains(_context.UserMovieGezienStatus.SingleOrDefault(mgs => mgs.MovieGezienStatusId == gezienStatusId)));
+                        }
+                        else
+                        {
+                            query = query.Where(m => m.Titel.Contains(titel)
+                                            && m.Genres.Contains(_context.GenreMovieCombo.SingleOrDefault(mg => mg.MovieGenreId == genreId))
+                                            && m.UserMovieGezienStatus.Contains(_context.UserMovieGezienStatus.SingleOrDefault(mgs => mgs.MovieGezienStatusId == gezienStatusId)));
+                        }
+                    }
+                    else if (regisseurId != 0)
+                    {
+                        query = query.Where(m => m.Titel.Contains(titel)
+                                            && m.Regisseurs.Contains(_context.MovieRegisseurCombo.SingleOrDefault(mr => mr.MovieRegisseurId == regisseurId))
+                                            && m.UserMovieGezienStatus.Contains(_context.UserMovieGezienStatus.SingleOrDefault(mgs => mgs.MovieGezienStatusId == gezienStatusId)));
+                    }
+                    else
+                    {
+                        query = query.Where(m => m.Titel.Contains(titel)
+                                            && m.UserMovieGezienStatus.Contains(_context.UserMovieGezienStatus.SingleOrDefault(mgs => mgs.MovieGezienStatusId == gezienStatusId)));
+                    }
+                }
+                else if (genreId != 0)
+                {
+                    if (regisseurId != 0)
+                    {
+                        query = query.Where(m => m.Titel.Contains(titel)
+                                        && m.Genres.Contains(_context.GenreMovieCombo.SingleOrDefault(mg => mg.MovieGenreId == genreId))
+                                        && m.Regisseurs.Contains(_context.MovieRegisseurCombo.SingleOrDefault(mr => mr.MovieRegisseurId == regisseurId)));
+                    }
+                    else
+                    {
+                        query = query.Where(m => m.Titel.Contains(titel)
+                                        && m.Genres.Contains(_context.GenreMovieCombo.SingleOrDefault(mg => mg.MovieGenreId == genreId)));
+                    }
+                }
+                else if (regisseurId != 0)
+                {
+                    query = query.Where(m => m.Titel.Contains(titel)
+                                        && m.Regisseurs.Contains(_context.MovieRegisseurCombo.SingleOrDefault(mr => mr.MovieRegisseurId == regisseurId))
+                                        && m.UserMovieGezienStatus.Contains(_context.UserMovieGezienStatus.SingleOrDefault(mgs => mgs.MovieGezienStatusId == gezienStatusId)));
+                }
+                else
+                {
+                    query = query.Where(m => m.Titel.Contains(titel)
+                                        && m.UserMovieGezienStatus.Contains(_context.UserMovieGezienStatus.SingleOrDefault(mgs => mgs.MovieGezienStatusId == gezienStatusId)));
+                }
+            }
+
+            else if (userId != null && gezienStatusId != 0)
+            {
+                if (genreId != 0)
+                {
+                    if (regisseurId != 0)
+                    {
+                        query = query.Where(m=>m.Genres.Contains(_context.GenreMovieCombo.SingleOrDefault(mg => mg.MovieGenreId == genreId))
+                                        && m.Regisseurs.Contains(_context.MovieRegisseurCombo.SingleOrDefault(mr => mr.MovieRegisseurId == regisseurId))
+                                        && m.UserMovieGezienStatus.Contains(_context.UserMovieGezienStatus.SingleOrDefault(mgs => mgs.MovieGezienStatusId == gezienStatusId)));
+                    }
+                    else
+                    {
+                        query = query.Where(m => m.Genres.Contains(_context.GenreMovieCombo.SingleOrDefault(mg => mg.MovieGenreId == genreId))
+                                        && m.UserMovieGezienStatus.Contains(_context.UserMovieGezienStatus.SingleOrDefault(mgs => mgs.MovieGezienStatusId == gezienStatusId)));
+                    }
+                }
+                else if (regisseurId != 0)
+                {
+                    query = query.Where(m => m.Regisseurs.Contains(_context.MovieRegisseurCombo.SingleOrDefault(mr => mr.MovieRegisseurId == regisseurId))
+                                        && m.UserMovieGezienStatus.Contains(_context.UserMovieGezienStatus.SingleOrDefault(mgs => mgs.MovieGezienStatusId == gezienStatusId)));
+                }
+                else
+                {
+                    query = query.Where(m => m.UserMovieGezienStatus.Contains(_context.UserMovieGezienStatus.SingleOrDefault(mgs => mgs.MovieGezienStatusId == gezienStatusId)));
+                }
+            }
+            else if (genreId != 0)
+            {
+                if (regisseurId != 0)
+                {
+                    query = query.Where(m => m.Genres.Contains(_context.GenreMovieCombo.SingleOrDefault(mg => mg.MovieGenreId == genreId))
+                                    && m.Regisseurs.Contains(_context.MovieRegisseurCombo.SingleOrDefault(mr => mr.MovieRegisseurId == regisseurId)));
+                }
+                else
+                {
+                    query = query.Where(m => m.Genres.Contains(_context.GenreMovieCombo.SingleOrDefault(mg => mg.MovieGenreId == genreId)));
+                }
+            }
+            else if (regisseurId != 0)
+            {
+                query = query.Where(m => m.Regisseurs.Contains(_context.MovieRegisseurCombo.SingleOrDefault(mr => mr.MovieRegisseurId == regisseurId)));
+            }
+            else
+            {
+                ;
+            }
+
+            if (ratingOrder == 1)
+            {
+                query = query.OrderBy(m => m.RatingReviews.Select(r => r.Rating));
+            }
+            else
+            {
+                query = query.OrderByDescending(m => m.RatingReviews.Select(r => r.Rating));
+
+            }
+            var movieQuery = query.ToList();
+
+            return movieQuery;
         }
     }
 }

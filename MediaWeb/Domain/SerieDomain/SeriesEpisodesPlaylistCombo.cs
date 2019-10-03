@@ -9,7 +9,6 @@ namespace MediaWeb.Domain.SerieDomain
     {
         public int SeriesEpisodeId { get; set; }
         public int SeriesEpisodesPlaylistId { get; set; }
-        public bool Publiek { get; set; } = true;
-        public bool Zichtbaar { get; set; } = true;
+      
     }
 }
