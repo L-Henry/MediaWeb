@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MediaWeb.Controllers.MovieControllers
+namespace MediaWeb.Controllers.MyMediaControllers
 {
-    public class MovieRatingReviewController : Controller
+    public class MyMusicController : Controller
     {
     }
 }

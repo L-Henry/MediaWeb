@@ -39,7 +39,7 @@ else
 
     
 
-    @*@if (SignInManager.IsSignedIn(User))
-        {*@
+    @if (SignInManager.IsSignedIn(User))
+        {
     <p><a asp-controller="MoviePlaylist" asp-action="Create">Create playlist</a></p>
     @*}*@

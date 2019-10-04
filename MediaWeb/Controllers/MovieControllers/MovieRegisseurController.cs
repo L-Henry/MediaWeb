@@ -1,6 +1,7 @@
 ﻿using MediaWeb.Domain.MovieDomain;
 using MediaWeb.Models.MovieModels.MovieRegisseurModels;
 using MediaWeb.Services.MovieServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace MediaWeb.Controllers.MovieControllers
             _movieService = movieService;
         }
 
-        //[Authorize]
+        [Authorize]
         public IActionResult Index()
         {
             List<MovieRegisseurListViewModel> listVM = new List<MovieRegisseurListViewModel>();
@@ -44,7 +45,7 @@ namespace MediaWeb.Controllers.MovieControllers
             return View(vm);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public IActionResult Create(MovieRegisseurCreateViewModel model)
         {
@@ -62,7 +63,7 @@ namespace MediaWeb.Controllers.MovieControllers
             return RedirectToAction("Index");
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public IActionResult Edit(int id, MovieRegisseurEditViewModel model)
         {
@@ -81,7 +82,7 @@ namespace MediaWeb.Controllers.MovieControllers
             return RedirectToAction("Index");
         }
 
-        //[Authorize]
+        [Authorize]
         public IActionResult Delete(int id)
         {
             MovieRegisseur movieGenreToDelete = _movieRegisseurService.Get(id);
@@ -105,7 +106,7 @@ namespace MediaWeb.Controllers.MovieControllers
             return View(vm);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public IActionResult ConfirmDelete(int id)
         {

@@ -40,5 +40,22 @@ namespace MediaWeb.Services.MovieServices
             _context.SaveChanges();
             return playlist;
         }
+
+        public IEnumerable<MoviePlaylist> GetPlaylistsByUserId(string userId) {
+            return _context.MoviePlaylist.Where(pl => pl.UserId == userId);
+        }
+
+        public bool CheckIfMovieInPlaylist(int movieId, int playlistId){
+            return _context.MoviePlaylistCombo.Any(c => c.MovieId == movieId && c.MoviePlaylistId == playlistId);
+        }
+
+
+        public void AssignMovieToPlaylist(int movieId, int playlistId)
+        {
+            _context.MoviePlaylistCombo.Add(new MoviePlaylistCombo { MovieId = movieId, MoviePlaylistId = playlistId });
+            _context.SaveChanges();
+        }
+
+
     }
 }

@@ -18,7 +18,7 @@ namespace MediaWeb.Domain.MovieDomain
         public ICollection<UserMovieGezienStatus> UserMovieGezienStatus { get; set; }
         public byte[] Foto { get; set; }
         public ICollection<MovieRegisseurCombo> Regisseurs { get; set; }
-        public ICollection<MoviePlaylistCombo> UserMoviePlaylists { get; set; }
+        public ICollection<MoviePlaylistCombo> MoviePlaylistCombo { get; set; }
 
         public ICollection<UserMovieFav> UserMovieFav { get; set; }
         public bool Zichtbaar { get; set; } = true;

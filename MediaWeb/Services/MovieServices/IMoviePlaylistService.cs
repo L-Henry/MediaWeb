@@ -13,7 +13,9 @@ namespace MediaWeb.Services.MovieServices
         int TotaleSpeelduur(int playlistId);
         MoviePlaylist Insert(MoviePlaylist playlist);
         MoviePlaylist Get(int id);
+        IEnumerable<MoviePlaylist> GetPlaylistsByUserId(string userId);
 
-
+        bool CheckIfMovieInPlaylist(int movieId, int playlistId);
+        void AssignMovieToPlaylist(int movieId, int playlistId);
     }
 }

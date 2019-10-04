@@ -8,6 +8,7 @@ namespace MediaWeb.Models.MovieModels.MoviePlaylistModels
     public class MoviePlaylistCreateViewModel
     {
         public string Naam { get; set; }
-        public List<MoviePlaylistPubliekViewModel> ZichtbaarList { get; set; }
+        public string Publiek { get; set; }
+        public string[] Opties = new[] { "Publiek", "Privé" };
     }
 }

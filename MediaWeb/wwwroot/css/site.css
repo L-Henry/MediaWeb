@@ -35,3 +35,9 @@ body {
         display: none;
     }
 }
+
+.reviewBorder {
+    border: 0.5rem;
+    border-style: solid;
+    border-color: midnightblue;
+}

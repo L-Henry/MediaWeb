@@ -90,14 +90,14 @@
         <td>Log in</td>
     }
 
-    <td><a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Movies.ElementAt(i).Id">Details</a></td>
+    <td><a asp-controller="Movie" asp-action="Details" asp-route-movieId="@Model.Movies.ElementAt(i).Id">Details</a></td>
     @*@if (SignInManager.IsSignedIn(User))
         {*@
-    <td><a asp-controller="Movie" asp-action="Update" asp-route-id="@Model.Movies.ElementAt(i).Id">Edit</a></td>
-    <td><a asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Movies.ElementAt(i).Id">Delete</a></td>
-    <td><a asp-controller="MoviePlaylist" asp-action="AddToPlaylist" asp-route-id="@Model.Movies.ElementAt(i).Id">Add To playlist</a></td>
+    <td><a asp-controller="Movie" asp-action="Update" asp-route-movieId="@Model.Movies.ElementAt(i).Id">Edit</a></td>
+    <td><a asp-controller="Movie" asp-action="Delete" asp-route-movieId="@Model.Movies.ElementAt(i).Id">Delete</a></td>
     @*}*@
 </tr>
+    
         }
     }
 

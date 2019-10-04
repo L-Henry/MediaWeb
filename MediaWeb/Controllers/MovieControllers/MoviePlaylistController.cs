@@ -47,30 +47,22 @@ namespace MediaWeb.Controllers.MovieControllers
             return View(vm);
         }
 
-        //[Authorize]
+        [Authorize]
         public IActionResult Create() {
-            List<MoviePlaylistPubliekViewModel> zichtbaarList = new List<MoviePlaylistPubliekViewModel> { new MoviePlaylistPubliekViewModel { Checked = true, Naam = "Publiek"},
-                                                                                                          new MoviePlaylistPubliekViewModel { Checked = false, Naam = "Privé"} };
-            MoviePlaylistCreateViewModel vm = new MoviePlaylistCreateViewModel { ZichtbaarList = zichtbaarList };
+            MoviePlaylistCreateViewModel vm = new MoviePlaylistCreateViewModel();
             return View(vm);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public IActionResult Create(MoviePlaylistCreateViewModel model) {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             MoviePlaylist playlist = new MoviePlaylist {
                 Naam = model.Naam,
-                UserId = userId != null ? userId : "geen user",
-                Zichtbaar = true
+                UserId = userId ?? null,
+                Zichtbaar = true,
+                Publiek = model.Publiek == "Publiek"
             };
-            foreach (var s in model.ZichtbaarList)
-            {
-                if (s.Naam == "Publiek")
-                {
-                    playlist.Publiek = s.Checked;
-                }
-            }
 
             _playlistService.Insert(playlist);
             return RedirectToAction("Details", new { id = playlist.Id });
@@ -106,11 +98,20 @@ namespace MediaWeb.Controllers.MovieControllers
                 Aantal = _playlistService.AantalMoviesInPlaylist(id),
                 Id = playlistFromDb.Id,
                 Speelduur = _playlistService.TotaleSpeelduur(id),
-                Username = playlistFromDb.UserId != null ? playlistFromDb.User.UserName : "Geen user"
+                Username = "Geen user"
             };
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            vm.IsCurrentUserOwnerOfPlaylist = userId == playlistFromDb.UserId;
+
             return View(vm);
         }
-          
+
+        public IActionResult Edit(int id) {
+            MoviePlaylist moviePlaylistFromDb = _playlistService.Get(id);
+            MoviePlaylistEditViewModel vm = new MoviePlaylistEditViewModel();
+            return View(vm);
+        }
 
     }
 }

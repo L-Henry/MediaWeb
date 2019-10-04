@@ -18,5 +18,6 @@ namespace MediaWeb.Models.MovieModels.MovieModels
         public List<SelectListItem> HeeftGezienSelectList { get; set; }
         public int HeeftGezien { get; set; }
 
+
     }
 }

@@ -12,6 +12,11 @@
 <p>@Model.Aantal</p>
 <strong>Playlist van:</strong>@Model.Username
 
+@if (Model.IsCurrentUserOwnerOfPlaylist)
+{
+<p><a asp-controller="MoviePlaylist" asp-action="Edit" asp-route-id="@Model.Id">Edit playist</a></p>
+}
+
 @if (Model.Movies.Count() == 0)
 {
     <p>Er zijn nog geen films in de playlist.</p>
@@ -50,6 +55,6 @@ else
                     <td><a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Movies.ElementAt(i).Id">Details</a></td>
                 </tr>
             }
-        }
+        
     </table>
 }

@@ -21,7 +21,7 @@
             <span class="text-danger" asp-validation-for="HeeftGezien"></span>
         </div>
 
-
+        <input type="hidden" asp-for="Id"/>
         <p>Average rating: @Model.Rating</p>
 
         <div class="form-group">
@@ -33,12 +33,24 @@
         </div>
     </form>
 
+    <form id="postForm2" asp-controller="Movie" asp-action="AddToPlaylist" method="post">
+        <div class="form-group">
+            <label asp-for="Playlist">Add to playlist: </label>
+            <select onchange="PlaylistSelect()" asp-for="Playlist" asp-items="Model.Playlists"></select>
+            <span class="text-danger" asp-validation-for="Playlist"></span>
+            <input  type="hidden" asp-for="Id"/>
+        </div>
+    </form>
     <a asp-controller="Movie" asp-action="RatingReview" asp-route-movieId="@Model.Id">Voeg review toe</a>
+
+
+
 }
 else
 {
     <p>Average rating: @Model.Rating</p>
 }
+
 
 
 
@@ -60,12 +72,16 @@ else
 
 
 <script type="text/javascript">
-
-    function HeeftGezienChanged() {
-        document.getElementById("postFrm").submit();
+    
+    function HeeftGezienChanged() {     
+        document.getElementById("postForm").submit();
     }
 
     function EigenRatingChanged() {
-        document.getElementById("postFrm").submit();
+        document.getElementById("postForm").submit();
+        }
+
+    function PlaylistSelect() {
+        document.getElementById("postForm2").submit();
     }
 </script>

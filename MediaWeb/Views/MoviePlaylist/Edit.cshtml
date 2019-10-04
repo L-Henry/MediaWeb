@@ -1,8 +1,8 @@
-﻿@model MediaWeb.Models.MovieModels.MoviePlaylistModels.MoviePlaylistCreateViewModel
+﻿@model MediaWeb.Models.MovieModels.MoviePlaylistModels.MoviePlaylistEditViewModel
 
 
 
-<form enctype="multipart/form-data" asp-controller="MoviePlaylist" asp-action="Create" method="post">
+<form enctype="multipart/form-data" asp-controller="MoviePlaylist" asp-action="Edit" method="post">
     <div class="form-group">
         <label asp-for="Naam"></label>
         <input class="form-control" asp-for="Naam" />
@@ -14,12 +14,12 @@
         <label asp-for="Opties"></label>
         @foreach (var opt in Model.Opties)
         {
-            <input type="radio" class="form-control" asp-for="Publiek" value="@opt"/> @opt
+            <input type="radio" class="form-control" asp-for="Publiek" value="@opt" /> @opt
         }
         <span class="text-danger" asp-validation-for="Opties"></span>
     </div>
 
 
-    <button class="btn btn-primary" type="submit">Create playlist</button>
+    <button class="btn btn-primary" type="submit">Edit playlist</button>
 
 </form>

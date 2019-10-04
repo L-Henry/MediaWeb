@@ -13,11 +13,12 @@ namespace MediaWeb.Services.MovieServices
         IEnumerable<Movie> GetMoviesByGenreId(int genreId);
         IEnumerable<Movie> GetMoviesByRegisseurId(int regisseurId);
         IEnumerable<Movie> GetMoviesByPlaylistId(int playlistId);
-        IEnumerable<Movie> GetByQuery(string titel, int gezienStatusId, int regisseurId, int ratingOrder, int genreId, string userId);
+        //IEnumerable<Movie> GetByQuery(string titel, int gezienStatusId, int regisseurId, int ratingOrder, int genreId, string userId);
         Movie Get(int id);
         Movie Insert(Movie movie);
         void Edit(int id, Movie movie);
         void Delete(int id);
+ 
 
     }
 }

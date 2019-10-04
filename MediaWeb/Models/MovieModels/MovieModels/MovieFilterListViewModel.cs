@@ -20,5 +20,6 @@ namespace MediaWeb.Models.MovieModels.MovieModels
 
         public int Regisseur { get; set; }
         public List<SelectListItem> RegisseurList { get; set; }
+
     }
 }

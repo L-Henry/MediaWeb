@@ -22,7 +22,7 @@ namespace MediaWeb.Controllers.MovieControllers
             _movieService = movieService;
         }
 
-        //[Authorize]
+        [Authorize]
         public IActionResult Index()
         {
             List<MovieGenreListViewModel> listVM = new List<MovieGenreListViewModel>();
@@ -44,7 +44,7 @@ namespace MediaWeb.Controllers.MovieControllers
             return View(vm);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public IActionResult Create(MovieGenreCreateViewModel model) {
             if (!TryValidateModel(model))
@@ -60,7 +60,7 @@ namespace MediaWeb.Controllers.MovieControllers
             return RedirectToAction("Index");
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public IActionResult Edit(int id, MovieGenreEditViewModel model) {
             if (!TryValidateModel(model))
@@ -78,7 +78,7 @@ namespace MediaWeb.Controllers.MovieControllers
             return RedirectToAction("Index");
         }
 
-        //[Authorize]
+        [Authorize]
         public IActionResult Delete(int id) {
             MovieGenre movieGenreToDelete = _movieGenreService.Get(id);
             IEnumerable<Movie> moviesFromDb = _movieService.GetMoviesByGenreId(id);
@@ -101,7 +101,7 @@ namespace MediaWeb.Controllers.MovieControllers
             return View(vm);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public IActionResult ConfirmDelete(int id) {
             _movieGenreService.Delete(id);

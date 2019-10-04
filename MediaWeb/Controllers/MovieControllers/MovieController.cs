@@ -19,16 +19,19 @@ namespace MediaWeb.Controllers.MovieControllers
         private readonly IMovieGenreService _genreService;
         private readonly IMovieGezienStatusService _GezienStatusService;
         private readonly IMovieRatingReviewService _RatingReviewService;
+        private readonly IMoviePlaylistService _playlistService;
 
 
 
-        public MovieController(IMovieService movieService, IMovieRegisseurService regisseurService, IMovieGenreService genreService, IMovieGezienStatusService gezienStatusService, IMovieRatingReviewService ratingReviewService)
+        public MovieController(IMovieService movieService, IMovieRegisseurService regisseurService, IMovieGenreService genreService, 
+            IMovieGezienStatusService gezienStatusService, IMovieRatingReviewService ratingReviewService, IMoviePlaylistService playlistService)
         {
             _movieService = movieService;
             _regisseurService = regisseurService;
             _genreService = genreService;
             _GezienStatusService = gezienStatusService;
             _RatingReviewService = ratingReviewService;
+            _playlistService = playlistService;
         }
 
 
@@ -62,9 +65,11 @@ namespace MediaWeb.Controllers.MovieControllers
                     Genres = genres,
                     AantalGezien = aantalGezien,
                     HeeftGezien = heeftGezien,
-                    Rating = ratingAvg
+                    Rating = ratingAvg,
                 });
             }
+
+            
 
             List<SelectListItem> GezienStatusList = new List<SelectListItem>();
             foreach (var status in _GezienStatusService.Get())
@@ -91,7 +96,6 @@ namespace MediaWeb.Controllers.MovieControllers
             {
                 Movies = movies,
                 RegisseurList = regisseurList,
-
             };
             return View(model);
         }
@@ -108,7 +112,7 @@ namespace MediaWeb.Controllers.MovieControllers
         //}
     
 
-        //[Authorize]
+        [Authorize]
         public IActionResult Create() {
             List<MovieGenreListViewModel> genreList = new List<MovieGenreListViewModel>();
             foreach (var genre in _genreService.Get())
@@ -128,7 +132,7 @@ namespace MediaWeb.Controllers.MovieControllers
             return View(model);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public IActionResult Create(MovieCreateViewModel model) {
             if (!TryValidateModel(model))
@@ -158,19 +162,19 @@ namespace MediaWeb.Controllers.MovieControllers
             //}
             _regisseurService.HandleRegisseurCreate(movieToAdd, model.Regisseurs);
 
-            return RedirectToAction("Details", new { id = movieToAdd.Id });
+            return RedirectToAction("Details", new { movieId = movieToAdd.Id });
         }
 
-        public IActionResult Details(int id) {
+        public IActionResult Details(int movieId) {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            Movie movieFromDb = _movieService.Get(id);
+            Movie movieFromDb = _movieService.Get(movieId);
 
             string regisseurs = string.Join(",", _regisseurService.GetRegisseursByMovieId(movieFromDb.Id).Select(x => x.Naam));
             IEnumerable<string> genresList = _genreService.GetGenresByMovieId(movieFromDb.Id).Select(x => x.Naam);
             string genres = string.Join(",", genresList);
 
-            int ratingAvg = movieFromDb.RatingReviews != null && movieFromDb.RatingReviews.Count != 0 ?
+            int ratingAvg = movieFromDb.RatingReviews != null && movieFromDb.RatingReviews.Where(r=>r.MovieId == movieId).Select(r=>r.Rating).Count() != 0 ?
                     movieFromDb.RatingReviews.Where(rat => rat.MovieId == movieFromDb.Id && rat.Rating > -1).Select(r => r.Rating).Sum()
                     / movieFromDb.RatingReviews.Where(rat => rat.MovieId == movieFromDb.Id && rat.Rating > -1).Count() : -1;
 
@@ -180,7 +184,7 @@ namespace MediaWeb.Controllers.MovieControllers
             int aantalWilZien = movieFromDb.UserMovieGezienStatus != null ?
                     movieFromDb.UserMovieGezienStatus.Where(s => s.MovieId == movieFromDb.Id && s.MovieGezienStatus != null && s.MovieGezienStatusId == 3).Count() : 0;
 
-            int heeftGezien = userId != null && movieFromDb.UserMovieGezienStatus.Any(s => s.UserId == userId && s.MovieGezienStatus != null) ?
+            int heeftGezien = userId != null && movieFromDb.UserMovieGezienStatus.Any(s => s.UserId == userId) ?
                     movieFromDb.UserMovieGezienStatus.SingleOrDefault(s => s.MovieId == movieFromDb.Id && s.UserId == userId).MovieGezienStatusId : 1;
 
             int eigenRating = userId != null && movieFromDb.RatingReviews.Any(rr => rr.UserId == userId) /*movieFromDb.RatingReviews.Count != 0*/ ?
@@ -200,7 +204,7 @@ namespace MediaWeb.Controllers.MovieControllers
             List<MovieRatingReviewViewModel> ratingReviewList = new List<MovieRatingReviewViewModel>();
             if (movieFromDb.RatingReviews != null)
             {
-                foreach (var rr in movieFromDb.RatingReviews.Where(r => r.MovieId == id).ToList())
+                foreach (var rr in movieFromDb.RatingReviews.Where(r => r.MovieId == movieId).ToList())
                 {
                     ratingReviewList.Add(new MovieRatingReviewViewModel
                     {
@@ -211,7 +215,22 @@ namespace MediaWeb.Controllers.MovieControllers
                     });
                 }
             }
-            
+
+            List<SelectListItem> playlistsFromUser = new List<SelectListItem>();
+            playlistsFromUser.Add(new SelectListItem { Text = "Kies playlist om aan film aan toe te voegen" });
+            foreach (var pl in _playlistService.GetPlaylistsByUserId(userId))
+            {
+                if (!_playlistService.CheckIfMovieInPlaylist(movieFromDb.Id, pl.Id))
+                {
+                    playlistsFromUser.Add(new SelectListItem { Value = pl.Id.ToString(), Text = pl.Naam });
+                }
+            }
+            if (playlistsFromUser.Count == 0)
+            {
+                playlistsFromUser.Clear();
+                playlistsFromUser.Add(new SelectListItem { Text = "Geen beschikbare playlists om aan toe te voegen." });
+            }
+
             MovieDetailsViewModel movieVM = new MovieDetailsViewModel()
             {
                 Id = movieFromDb.Id,
@@ -226,22 +245,39 @@ namespace MediaWeb.Controllers.MovieControllers
                 AantalWilZien = aantalWilZien,
                 HeeftGezienSelectList = heeftGezienSelectList,
                 HeeftGezien = heeftGezien,
-                RatingReview = ratingReviewList
+                RatingReview = ratingReviewList,
+                Playlists = playlistsFromUser
             };
             return View(movieVM);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public IActionResult Details(MovieDetailsViewModel model)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             _GezienStatusService.AssignGezienStatus(model.Id, userId, model.HeeftGezien);
-            _RatingReviewService.AssignRatingReview(model.Id, userId, model.EigenRating);
-            return RedirectToAction("Details");
+            if (model.EigenRating > -1)
+            {
+                _RatingReviewService.AssignRatingReview(model.Id, userId, model.EigenRating);
+            }
+            return RedirectToAction("Details", new { movieId = model.Id });
         }
 
-        
+        [Authorize]
+        [HttpPost]
+        public IActionResult AddToPlaylist(MovieDetailsViewModel model)
+        {
+            int playlistId = model.Playlist;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (_playlistService.GetPlaylistsByUserId(userId).Contains(_playlistService.Get(playlistId)))
+            {
+                _playlistService.AssignMovieToPlaylist(model.Id, playlistId);
+            }
+            return RedirectToAction("Details", new { movieId = model.Id });
+        }
+
+
         public IActionResult RatingReview(int movieId) {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Movie movieFromDb = _movieService.Get(movieId);
@@ -270,18 +306,18 @@ namespace MediaWeb.Controllers.MovieControllers
         }
 
         [HttpPost]
-        public IActionResult RatingReview(MovieRatingReviewViewModel model, int id)
+        public IActionResult RatingReview(MovieRatingReviewViewModel model, int movieId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            _RatingReviewService.AssignRatingReview(id, userId, model.Rating, model.Review);
-            return RedirectToAction("MovieDetail", new { id = model.Id });
+            _RatingReviewService.AssignRatingReview(movieId, userId, model.Rating, model.Review);
+            return RedirectToAction("Details", new { id = model.Id });
         }
 
 
-        //[Authorize]
-        public IActionResult Delete(int id)
+        [Authorize]
+        public IActionResult Delete(int movieId)
         {
-            Movie movieFromDb = _movieService.Get(id);
+            Movie movieFromDb = _movieService.Get(movieId);
             MovieDeleteViewModel model = new MovieDeleteViewModel()
             {
                 Naam = movieFromDb.Titel,
@@ -290,14 +326,50 @@ namespace MediaWeb.Controllers.MovieControllers
             return View(model);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
-        public IActionResult ConfirmDelete(int id)
+        public IActionResult ConfirmDelete(int movieId)
         {
-            _movieService.Delete(id);
+            _movieService.Delete(movieId);
             return RedirectToAction("Index");
         }
 
+        [Authorize]
+        public IActionResult Edit(int movieId) {
+            Movie movieFromDb = _movieService.Get(movieId);
+            List<MovieGenreListViewModel> genreList = new List<MovieGenreListViewModel>();
+            List<int> genresInMovie = _genreService.GetGenresByMovieId(movieId).Select(g=>g.Id).ToList();
+            foreach (var genre in _genreService.Get())
+            {               
+                genreList.Add(new MovieGenreListViewModel() { Naam = genre.Naam , Checked = genresInMovie.Contains(genre.Id)});
+            };
 
+            string regisseur = _regisseurService.GetRegisseursByMovieId(movieId).Select(r=>r.Naam).ToString();
+
+            MovieEditViewModel vm = new MovieEditViewModel {
+                Id = movieFromDb.Id,
+                Beschrijving = movieFromDb.Beschrijving,
+                GenreList = genreList,
+                Regisseurs = regisseur,
+                Speelduur = movieFromDb.Speelduur,
+                Titel = movieFromDb.Titel
+            };
+
+            return View(vm);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Edit(int movieId, MovieEditViewModel model) {
+            Movie movieToEdit = new Movie
+            {
+                Beschrijving = model.Beschrijving,
+                Titel = model.Titel,
+                Speelduur = model.Speelduur
+            };
+            _movieService.Edit(movieId, movieToEdit);
+
+            return RedirectToAction("Details", new { id = movieId });
+        }
     }
 }

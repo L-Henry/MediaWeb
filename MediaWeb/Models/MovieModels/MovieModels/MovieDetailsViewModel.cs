@@ -21,6 +21,8 @@ namespace MediaWeb.Models.MovieModels.MovieModels
         public int AantalWilZien { get; set; }
         public int EigenRating { get; set; }
         public List<SelectListItem> EigenRatingSelectList { get; set; }
+        public int Playlist { get; set; }
+        public List<SelectListItem> Playlists { get; set; }
 
 
 
