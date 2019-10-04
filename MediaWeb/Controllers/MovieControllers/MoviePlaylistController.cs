@@ -106,11 +106,30 @@ namespace MediaWeb.Controllers.MovieControllers
 
             return View(vm);
         }
-
+        [Authorize]
         public IActionResult Edit(int id) {
             MoviePlaylist moviePlaylistFromDb = _playlistService.Get(id);
-            MoviePlaylistEditViewModel vm = new MoviePlaylistEditViewModel();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            MoviePlaylistEditViewModel vm = new MoviePlaylistEditViewModel {
+                Id = moviePlaylistFromDb.Id,
+                Naam = moviePlaylistFromDb.Naam,
+                Publiek = moviePlaylistFromDb.Publiek ? "Publiek" : "Privé",
+                IsCurrentUserOwnerOfPlaylist = moviePlaylistFromDb.UserId == userId
+            };
             return View(vm);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Edit(MoviePlaylistEditViewModel model) {
+            MoviePlaylist playlistToEdit = new MoviePlaylist
+            {
+                Naam = model.Naam,
+                Publiek = model.Publiek == "Publiek"
+            };
+            _playlistService.Edit(model.Id, playlistToEdit);
+            return RedirectToAction("Details", new { id = model.Id});
         }
 
     }

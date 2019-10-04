@@ -17,5 +17,6 @@ namespace MediaWeb.Services.MovieServices
 
         bool CheckIfMovieInPlaylist(int movieId, int playlistId);
         void AssignMovieToPlaylist(int movieId, int playlistId);
+        void Edit(int id, MoviePlaylist playlist);
     }
 }

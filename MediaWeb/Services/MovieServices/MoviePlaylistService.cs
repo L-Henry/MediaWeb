@@ -56,6 +56,14 @@ namespace MediaWeb.Services.MovieServices
             _context.SaveChanges();
         }
 
-
+        public void Edit(int id, MoviePlaylist playlist) {
+            MoviePlaylist playlistToEdit = Get(id);
+            if (playlistToEdit != null)
+            {
+                playlistToEdit.Naam = playlist.Naam;
+                playlistToEdit.Publiek = playlist.Publiek;
+                _context.SaveChanges();
+            }
+        }
     }
 }
