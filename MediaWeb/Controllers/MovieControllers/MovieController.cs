@@ -309,7 +309,7 @@ namespace MediaWeb.Controllers.MovieControllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             _RatingReviewService.AssignRatingReview(movieId, userId, model.Rating, model.Review);
-            return RedirectToAction("Details", new { id = movieId });
+            return RedirectToAction("Details", new { movieId = movieId });
         }
 
 

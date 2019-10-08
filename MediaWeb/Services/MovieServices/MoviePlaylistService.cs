@@ -49,7 +49,6 @@ namespace MediaWeb.Services.MovieServices
             return _context.MoviePlaylistCombo.Any(c => c.MovieId == movieId && c.MoviePlaylistId == playlistId);
         }
 
-
         public void AssignMovieToPlaylist(int movieId, int playlistId)
         {
             _context.MoviePlaylistCombo.Add(new MoviePlaylistCombo { MovieId = movieId, MoviePlaylistId = playlistId });

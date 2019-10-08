@@ -53,7 +53,7 @@ namespace MediaWeb.Services.MovieServices
         {
             return _context.Movies.Include(m => m.RatingReviews).ThenInclude(r=>r.User)
                                   .Include(m => m.UserMovieGezienStatus).ThenInclude(r => r.User)
-                                  .Include(m=>m.UserMovieGezienStatus).ThenInclude(m=>m.MovieGezienStatus)
+                                  .Include(m => m.UserMovieGezienStatus).ThenInclude(m => m.MovieGezienStatus)
                                   .Include(m => m.Genres)
                                   .Include(m => m.Regisseurs)
                                   .Include(m => m.MoviePlaylistCombo)
@@ -73,7 +73,12 @@ namespace MediaWeb.Services.MovieServices
         }
         public IEnumerable<Movie> GetMoviesByPlaylistId(int playlistId)
         {
-            return _context.Movies.Where(m => m.MoviePlaylistCombo.Contains(_context.MoviePlaylistCombo.SingleOrDefault(mg => mg.MoviePlaylistId == playlistId)));
+            var movieIds = _context.MoviePlaylistCombo.Where(x => x.MoviePlaylistId == playlistId).Select(x => x.MovieId).ToList();
+            var movies = _context.Movies.Include(m => m.RatingReviews).ThenInclude(r => r.User)
+                                        .Include(m => m.UserMovieGezienStatus).ThenInclude(r => r.User)
+                                        .Include(m => m.UserMovieGezienStatus).ThenInclude(m => m.MovieGezienStatus)
+                                        .Where(x => movieIds.Contains(x.Id));
+            return movies;
         }
 
         public Movie Insert(Movie movie)

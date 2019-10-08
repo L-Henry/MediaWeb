@@ -75,9 +75,9 @@ namespace MediaWeb.Controllers.MovieControllers
             List<MoviePlaylistMoviesListViewModel> moviesList = new List<MoviePlaylistMoviesListViewModel>();
             foreach (var mov in moviesFromDb)
             {
-                int ratingAvg = mov.RatingReviews != null && mov.RatingReviews.Count != 0 ?
-                    mov.RatingReviews.Where(rat => rat.MovieId == mov.Id && rat.Rating > -1).Select(r => r.Rating).Sum()
-                    / mov.RatingReviews.Where(rat => rat.MovieId == mov.Id && rat.Rating > -1).Count() : -1;
+                int ratingAvg = mov.RatingReviews != null && mov.RatingReviews.Where(r => r.MovieId == mov.Id).Select(r => r.Rating).Count() != 0 ?
+                   mov.RatingReviews.Where(rat => rat.MovieId == mov.Id && rat.Rating > -1).Select(r => r.Rating).Sum()
+                   / mov.RatingReviews.Where(rat => rat.MovieId == mov.Id && rat.Rating > -1).Count() : -1;
 
                 int aantalGezien = mov.UserMovieGezienStatus != null ?
                         mov.UserMovieGezienStatus.Where(s => s.MovieId == mov.Id && s.MovieGezienStatus != null && s.MovieGezienStatusId == 2).Count() : 0;
@@ -98,7 +98,7 @@ namespace MediaWeb.Controllers.MovieControllers
                 Aantal = _playlistService.AantalMoviesInPlaylist(id),
                 Id = playlistFromDb.Id,
                 Speelduur = _playlistService.TotaleSpeelduur(id),
-                Username = "Geen user"
+                Username = playlistFromDb.User.UserName
             };
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

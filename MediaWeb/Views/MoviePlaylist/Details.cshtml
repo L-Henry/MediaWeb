@@ -43,7 +43,7 @@ else
                 <tr>
                     <td>@Model.Movies.ElementAt(i).Id )</td>
                     <td>@Model.Movies.ElementAt(i).Titel</td>
-                    @if (@Model.Movies.ElementAt(i).Rating < 0)
+                    @if (@Model.Movies.ElementAt(i).Rating > 0)
                     {
                         <td>@Model.Movies.ElementAt(i).Rating</td>
                     }
@@ -52,7 +52,7 @@ else
                         <td>Nog geen rating</td>
                     }
                     <td>@Model.Movies.ElementAt(i).AantalGezien</td>
-                    <td><a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Movies.ElementAt(i).Id">Details</a></td>
+                    <td><a asp-controller="Movie" asp-action="Details" asp-route-movieId="@Model.Movies.ElementAt(i).Id">Details</a></td>
                 </tr>
             }
         
