@@ -43,6 +43,7 @@ namespace MediaWeb.Services.MovieServices
         {
             return _context.Movies.Include(m => m.RatingReviews).ThenInclude(r => r.User)
                                   .Include(m => m.UserMovieGezienStatus).ThenInclude(r => r.User)
+                                  .Include(m => m.UserMovieGezienStatus).ThenInclude(m => m.MovieGezienStatus)
                                   .Include(m => m.Genres)
                                   .Include(m => m.Regisseurs)
                                   .Include(m => m.MoviePlaylistCombo);  

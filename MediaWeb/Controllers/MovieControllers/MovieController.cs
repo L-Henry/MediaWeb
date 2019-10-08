@@ -47,14 +47,15 @@ namespace MediaWeb.Controllers.MovieControllers
                 string regisseurs = _regisseurService.GetRegisseursByMovieId(movie.Id).Count() != 0 ? string.Join(",", _regisseurService.GetRegisseursByMovieId(movie.Id).Select(x => x.Naam)) : "Geen regisseur";
                 string genres = _genreService.GetGenresByMovieId(movie.Id) != null ? string.Join(",", _genreService.GetGenresByMovieId(movie.Id).Select(x => x.Naam)) : "Geen genres";
 
-                int ratingAvg = movie.RatingReviews.Where(rat => rat.MovieId == movie.Id && rat.Rating > -1).Count() != 0 ?
-                    movie.RatingReviews.Where(rat => rat.MovieId == movie.Id && rat.Rating > -1).Select(r => r.Rating).Sum() / movie.RatingReviews.Where(rat => rat.MovieId == movie.Id && rat.Rating > -1).Count() : -1;
+                int ratingAvg = movie.RatingReviews != null && movie.RatingReviews.Where(r => r.MovieId == movie.Id).Select(r => r.Rating).Count() != 0 ?
+                   movie.RatingReviews.Where(rat => rat.MovieId == movie.Id && rat.Rating > -1).Select(r => r.Rating).Sum()
+                   / movie.RatingReviews.Where(rat => rat.MovieId == movie.Id && rat.Rating > -1).Count() : -1;
 
-                int aantalGezien = movie.UserMovieGezienStatus.Any(s => s.MovieGezienStatus != null) ?
-                    movie.UserMovieGezienStatus.Where(s => s.MovieId == movie.Id && s.MovieGezienStatus != null && s.MovieGezienStatusId == 2).Count() : 0;
+                int aantalGezien = movie.UserMovieGezienStatus != null ?
+                        movie.UserMovieGezienStatus.Where(s => s.MovieId == movie.Id && s.MovieGezienStatus != null && s.MovieGezienStatusId == 2).Count() : 0;
 
-                int heeftGezien = userId != null && movie.UserMovieGezienStatus.Any(s => s.UserId == userId && s.MovieGezienStatus != null) ?
-                    movie.UserMovieGezienStatus.SingleOrDefault(s => s.MovieId == movie.Id && s.UserId == userId).MovieGezienStatusId : 1;
+                int heeftGezien = userId != null && movie.UserMovieGezienStatus.Any(s => s.UserId == userId) ?
+                        movie.UserMovieGezienStatus.SingleOrDefault(s => s.MovieId == movie.Id && s.UserId == userId).MovieGezienStatusId : 1;
 
                 movies.Add(new MovieListViewModel
                 {
@@ -68,8 +69,6 @@ namespace MediaWeb.Controllers.MovieControllers
                     Rating = ratingAvg,
                 });
             }
-
-            
 
             List<SelectListItem> GezienStatusList = new List<SelectListItem>();
             foreach (var status in _GezienStatusService.Get())
@@ -310,7 +309,7 @@ namespace MediaWeb.Controllers.MovieControllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             _RatingReviewService.AssignRatingReview(movieId, userId, model.Rating, model.Review);
-            return RedirectToAction("Details", new { id = model.Id });
+            return RedirectToAction("Details", new { id = movieId });
         }
 
 
