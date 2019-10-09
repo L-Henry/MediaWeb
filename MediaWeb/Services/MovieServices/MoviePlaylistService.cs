@@ -67,5 +67,12 @@ namespace MediaWeb.Services.MovieServices
                 _context.SaveChanges();
             }
         }
+
+        public void Delete(int playlistId) {
+            MoviePlaylist playlistToDelete = Get(playlistId);
+            _context.MoviePlaylist.Remove(playlistToDelete);
+            _context.MoviePlaylistCombo.RemoveRange(_context.MoviePlaylistCombo.Where(pl => pl.MoviePlaylistId == playlistId));
+            _context.SaveChanges();
+        }
     }
 }

@@ -132,5 +132,27 @@ namespace MediaWeb.Controllers.MovieControllers
             return RedirectToAction("Details", new { playlistId = model.Id});
         }
 
+
+
+        [Authorize]
+        public IActionResult Delete(int playlistId)
+        {
+            MoviePlaylist playlist = _playlistService.Get(playlistId);
+            MoviePlaylistDeleteViewModel vm = new MoviePlaylistDeleteViewModel
+            {
+                Id = playlist.Id,
+                Naam = playlist.Naam
+            };
+            return View(vm);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult ConfirmDelete(int playlistId)
+        {
+            _playlistService.Delete(playlistId);
+            return RedirectToAction("Index", "MyMedia");
+        }
+
     }
 }

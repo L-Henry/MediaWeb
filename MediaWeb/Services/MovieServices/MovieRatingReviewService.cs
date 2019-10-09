@@ -35,5 +35,13 @@ namespace MediaWeb.Services.MovieServices
         {
             return _context.MovieRatingReview.SingleOrDefault(x => x.MovieId == movieId && x.UserId == userId);
         }
+
+        public int RatingByUserIdAndMovieId(string userId, int movieId) {
+            return _context.MovieRatingReview.SingleOrDefault(rr => rr.UserId == userId && rr.MovieId == movieId).Rating;
+        }
+
+        public bool CheckIfReviewGeschrevenByUserIdForMovieId(string userId, int movieId) {
+            return !String.IsNullOrEmpty(_context.MovieRatingReview.SingleOrDefault(rr => rr.UserId == userId && rr.MovieId == movieId).Review);
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace MediaWeb.Services.MovieServices
     {
         void AssignRatingReview(int movieId, string userId, int eigenRating, string eigenReview = null);
         MovieRatingReview Get(int movieId, string userId);
-
+        int RatingByUserIdAndMovieId(string userId, int movieId);
+        bool CheckIfReviewGeschrevenByUserIdForMovieId(string userId, int movieId);
     }
 }

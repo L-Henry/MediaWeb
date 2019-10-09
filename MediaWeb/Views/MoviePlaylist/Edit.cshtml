@@ -14,7 +14,7 @@
         <label asp-for="Opties"></label>
         @foreach (var opt in Model.Opties)
         {
-            <input type="radio" class="form-control" asp-for="Publiek" value="@opt" /> @opt
+            <input type="radio" asp-for="Publiek" value="@opt" /> @opt
         }
         <span class="text-danger" asp-validation-for="Opties"></span>
     </div>

@@ -14,9 +14,9 @@ namespace MediaWeb.Services.MovieServices
         MoviePlaylist Insert(MoviePlaylist playlist);
         MoviePlaylist Get(int id);
         IEnumerable<MoviePlaylist> GetPlaylistsByUserId(string userId);
-
         bool CheckIfMovieInPlaylist(int movieId, int playlistId);
         void AssignMovieToPlaylist(int movieId, int playlistId);
         void Edit(int id, MoviePlaylist playlist);
+        void Delete(int playlistId);
     }
 }

@@ -25,7 +25,7 @@
         <label asp-for="GenreList"></label>
         @for (int i = 0; i < Model.GenreList.Count; i++)
         {
-            <input type="checkbox" class="form-control" asp-for="GenreList[i].Checked" />@Model.GenreList[i].Naam
+            <input type="checkbox" asp-for="GenreList[i].Checked" />@Model.GenreList[i].Naam
             <input type="hidden" asp-for="@Model.GenreList[i].Naam" />
         }
         <span class="text-danger" asp-validation-for="GenreList"></span>

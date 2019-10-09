@@ -11,6 +11,11 @@ namespace MediaWeb.Services.MovieServices
     {
         private readonly MediaContext _context;
 
+        public MyMoviePlaylistService(MediaContext context)
+        {
+            _context = context;
+        }
+
         public IEnumerable<MoviePlaylist> GetByUserId(string userId)
         {
             var playlists = _context.MoviePlaylist.Where(pl => pl.UserId == userId);

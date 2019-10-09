@@ -12,6 +12,7 @@ namespace MediaWeb.Models.MovieModels.MovieModels
 
         public string Titel { get; set; }
         public List<MovieGenreListViewModel> GenreList { get; set; }
+        public List<int> Genres { get; set; }
         public string Regisseurs { get; set; }
         public IFormFile Foto { get; set; }
         public int Speelduur { get; set; }

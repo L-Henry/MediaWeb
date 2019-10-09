@@ -1,0 +1,132 @@
+﻿@model MediaWeb.Models.MyMediaModels.MyMediaViewModel
+
+<h1>My movies:</h1>
+
+<table>
+    <tr>
+        <td style="width:5rem">
+            <strong>Id</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>Title</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>Rating</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>Aantal gezien</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>My rating</strong>
+        </td>
+        <td style="width:10rem">
+            <strong>Reviewed</strong>
+        </td>
+        <td style="width:5rem" />
+        <td style="width:5rem" />
+        <td style="width:5rem" />
+    </tr>
+    @if (Model.MyMovies.Count() == 0)
+    {
+        <tr><td>EU hebt nog geen films aangeduid als gezien.</td></tr>
+    }
+    else
+    {
+        for (int i = 0; i < Model.MyMovies.Count(); i++)
+        {
+            <tr>
+                <td>@Model.MyMovies.ElementAt(i).Id)</td>
+                <td>@Model.MyMovies.ElementAt(i).Titel</td>
+                @if (@Model.MyMovies.ElementAt(i).Rating != -1)
+                {
+                    <td>@Model.MyMovies.ElementAt(i).Rating</td>
+                }
+                else
+                {
+                    <td>Geen rating</td>
+                }
+                <td>@Model.MyMovies.ElementAt(i).AantalGezien</td>
+                <td>@Model.MyMovies.ElementAt(i).MyRating</td>
+                @if (Model.MyMovies.ElementAt(i).ReviewGeschreven)
+                {
+                    <td>X</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+
+                <td><a asp-controller="Movie" asp-action="Details" asp-route-movieId="@Model.MyMovies.ElementAt(i).Id">Details</a></td>
+                <td><a asp-controller="Movie" asp-action="Edit" asp-route-movieId="@Model.MyMovies.ElementAt(i).Id">Edit</a></td>
+                <td><a asp-controller="Movie" asp-action="Delete" asp-route-movieId="@Model.MyMovies.ElementAt(i).Id">Delete</a></td>
+
+            </tr>
+
+        }
+    }
+</table>
+
+<hr />
+
+<h1>My Movie Playlists</h1>
+
+
+@if (Model.MyPlaylists.Count() == 0)
+{
+
+    <tr><td>Er zijn nog geen playlists.</td></tr>
+}
+else
+{
+    <table>
+        <tr>
+            <td style="width:5rem">
+                <strong>Id</strong>
+            </td>
+            <td style="width:20rem">
+                <strong>Naam</strong>
+            </td>
+            <td style="width:10rem">
+                <strong>Aantal</strong>
+            </td>
+            <td style="width:10rem">
+                <strong>Speelduur</strong>
+            </td>
+            <td style="width:10rem">
+                <strong>Publiek?</strong>
+            </td>
+            <td style="width:5rem"></td>
+            <td style="width:5rem"></td>
+            <td style="width:5rem"></td>
+
+        </tr>
+
+        @for (int i = 0; i < Model.MyPlaylists.Count(); i++)
+        {
+    <tr>
+        <td>@Model.MyPlaylists.ElementAt(i).Id)</td>
+        <td>@Model.MyPlaylists.ElementAt(i).Naam</td>
+        <td>@Model.MyPlaylists.ElementAt(i).Aantal</td>
+        <td>@Model.MyPlaylists.ElementAt(i).Speelduur</td>
+        @if (@Model.MyPlaylists.ElementAt(i).Publiek)
+        {
+            <td>X</td>
+        }
+        else
+        {
+            <td></td>
+        }
+
+        <td><a asp-controller="MoviePlaylist" asp-action="Details" asp-route-playlistId="@Model.MyPlaylists.ElementAt(i).Id">Details</a></td>
+        <td><a asp-controller="MoviePlaylist" asp-action="Edit" asp-route-playlistId="@Model.MyPlaylists.ElementAt(i).Id">Edit</a></td>
+        <td><a asp-controller="MoviePlaylist" asp-action="Delete" asp-route-playlistId="@Model.MyPlaylists.ElementAt(i).Id">Delete</a></td>
+
+
+    </tr>
+        }
+    </table>
+
+}
+
+
+
