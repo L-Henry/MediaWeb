@@ -65,13 +65,13 @@ namespace MediaWeb.Controllers.MovieControllers
             };
 
             _playlistService.Insert(playlist);
-            return RedirectToAction("Details", new { id = playlist.Id });
+            return RedirectToAction("Details", new { playlistId = playlist.Id });
         }
 
 
-        public IActionResult Details(int id) {
-            MoviePlaylist playlistFromDb = _playlistService.Get(id);
-            IEnumerable<Movie> moviesFromDb = _movieService.GetMoviesByPlaylistId(id);
+        public IActionResult Details(int playlistId) {
+            MoviePlaylist playlistFromDb = _playlistService.Get(playlistId);
+            IEnumerable<Movie> moviesFromDb = _movieService.GetMoviesByPlaylistId(playlistId);
             List<MoviePlaylistMoviesListViewModel> moviesList = new List<MoviePlaylistMoviesListViewModel>();
             foreach (var mov in moviesFromDb)
             {
@@ -95,9 +95,9 @@ namespace MediaWeb.Controllers.MovieControllers
             MoviePlaylistDetailsListView vm = new MoviePlaylistDetailsListView {
                 Movies = moviesList,
                 Naam = playlistFromDb.Naam,
-                Aantal = _playlistService.AantalMoviesInPlaylist(id),
+                Aantal = _playlistService.AantalMoviesInPlaylist(playlistId),
                 Id = playlistFromDb.Id,
-                Speelduur = _playlistService.TotaleSpeelduur(id),
+                Speelduur = _playlistService.TotaleSpeelduur(playlistId),
                 Username = playlistFromDb.User.UserName
             };
 
@@ -107,8 +107,8 @@ namespace MediaWeb.Controllers.MovieControllers
             return View(vm);
         }
         [Authorize]
-        public IActionResult Edit(int id) {
-            MoviePlaylist moviePlaylistFromDb = _playlistService.Get(id);
+        public IActionResult Edit(int playlistId) {
+            MoviePlaylist moviePlaylistFromDb = _playlistService.Get(playlistId);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             MoviePlaylistEditViewModel vm = new MoviePlaylistEditViewModel {
@@ -129,7 +129,7 @@ namespace MediaWeb.Controllers.MovieControllers
                 Publiek = model.Publiek == "Publiek"
             };
             _playlistService.Edit(model.Id, playlistToEdit);
-            return RedirectToAction("Details", new { id = model.Id});
+            return RedirectToAction("Details", new { playlistId = model.Id});
         }
 
     }

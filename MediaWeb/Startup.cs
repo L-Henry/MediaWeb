@@ -46,6 +46,9 @@ namespace MediaWeb
             services.AddTransient<IMovieGezienStatusService, MovieGezienStatusService>();
             services.AddTransient<IMovieRatingReviewService, MovieRatingReviewService>();
             services.AddTransient<IMoviePlaylistService, MoviePlaylistService>();
+            services.AddTransient<IMyMovieService, MyMovieService>();
+            services.AddTransient<IMyMoviePlaylistService, MyMoviePlaylistService>();
+
 
 
 

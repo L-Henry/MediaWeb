@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediaWeb.Data;
 using MediaWeb.Domain.MovieDomain;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediaWeb.Services.MovieServices
 {
@@ -18,11 +19,13 @@ namespace MediaWeb.Services.MovieServices
 
         public IEnumerable<MoviePlaylist> Get()
         {
-            return _context.MoviePlaylist.Where(p => p.Zichtbaar);
+            return _context.MoviePlaylist.Include(pl => pl.User)
+                                         .Where(p => p.Zichtbaar);
         }
 
         public MoviePlaylist Get(int id) {
-            return _context.MoviePlaylist.SingleOrDefault(mp => mp.Id == id);
+            return _context.MoviePlaylist.Include(pl=>pl.User)
+                                         .SingleOrDefault(mp => mp.Id == id);
         }
 
         public int AantalMoviesInPlaylist(int playlistId) {

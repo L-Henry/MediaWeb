@@ -29,7 +29,7 @@ else
             <td>@Model.ElementAt(i).Id )</td>
             <td>@Model.ElementAt(i).Naam</td>
 
-            <td><a asp-controller="MoviePlaylist" asp-action="Details" asp-route-id="@Model.ElementAt(i).Id">View playlist</a></td>
+            <td><a asp-controller="MoviePlaylist" asp-action="Details" asp-route-playlistId="@Model.ElementAt(i).Id">View playlist</a></td>
 
         </tr>
     }

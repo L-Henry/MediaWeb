@@ -309,7 +309,7 @@ namespace MediaWeb.Controllers.MovieControllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             _RatingReviewService.AssignRatingReview(movieId, userId, model.Rating, model.Review);
-            return RedirectToAction("Details", new { movieId = movieId });
+            return RedirectToAction("Details", new { movieId });
         }
 
 
@@ -359,16 +359,16 @@ namespace MediaWeb.Controllers.MovieControllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(int movieId, MovieEditViewModel model) {
+        public IActionResult Edit(MovieEditViewModel model, int movieId) {
             Movie movieToEdit = new Movie
             {
                 Beschrijving = model.Beschrijving,
                 Titel = model.Titel,
                 Speelduur = model.Speelduur
             };
-            _movieService.Edit(movieId, movieToEdit);
+            _movieService.Edit(model.Id, movieToEdit);
 
-            return RedirectToAction("Details", new { id = movieId });
+            return RedirectToAction("Details", new { movieId });
         }
     }
 }
