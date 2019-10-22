@@ -1,0 +1,19 @@
+﻿@model MediaWeb.Models.MovieModels.MovieGenreModels.MovieGenreDeleteViewModel
+
+<p>Wil je @Model.Naam echt verwijderen?</p>
+    <p>Dit heeft een impact op volgende films:</p>
+    @for (int i = 0; i < Model.ImpactedMovies.Count(); i++)
+    {
+        @Model.ImpactedMovies.ElementAt(i)
+    }
+
+
+    
+
+
+
+
+<form asp-controller="MovieGenre" asp-action="ConfirmDelete" asp-route-id="@Model.Id" method="post">
+    <button class="btn btn-primary" type="submit">Delete</button>
+</form>
+<a type="button" asp-controller="MovieGenre" asp-action="Index">Go back</a>

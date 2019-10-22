@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MediaWeb.Data;
+using MediaWeb.Services.MovieServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,6 +35,24 @@ namespace MediaWeb
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<MediaContext>(options =>
+              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<MediaContext>();
+
+            services.AddTransient<IMovieGenreService, MovieGenreService>();
+            services.AddTransient<IMovieRegisseurService, MovieRegisseurService>();
+            services.AddTransient<IMovieService, MovieService>();
+            services.AddTransient<IMovieGezienStatusService, MovieGezienStatusService>();
+            services.AddTransient<IMovieRatingReviewService, MovieRatingReviewService>();
+            services.AddTransient<IMoviePlaylistService, MoviePlaylistService>();
+            services.AddTransient<IMyMovieService, MyMovieService>();
+            services.AddTransient<IMyMoviePlaylistService, MyMoviePlaylistService>();
+
+
+
+
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -51,6 +73,7 @@ namespace MediaWeb
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

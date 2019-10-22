@@ -1,0 +1,60 @@
+﻿@model MediaWeb.Models.MovieModels.MoviePlaylistModels.MoviePlaylistDetailsListView
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<hr />
+
+<strong>Naam</strong>
+<p>@Model.Naam</p>
+<strong>Totale speelduur</strong>
+<p>@Model.Speelduur</p>
+<strong>Aantal films in playlist</strong>
+<p>@Model.Aantal</p>
+<strong>Playlist van:</strong>@Model.Username
+
+@if (Model.IsCurrentUserOwnerOfPlaylist)
+{
+<p><a asp-controller="MoviePlaylist" asp-action="Edit" asp-route-id="@Model.Id">Edit playist</a></p>
+}
+
+@if (Model.Movies.Count() == 0)
+{
+    <p>Er zijn nog geen films in de playlist.</p>
+}
+else
+{
+    <table>
+        <tr>
+            <td style="width:3rem">
+                <strong>Id</strong>
+            </td>
+            <td style="width:10rem">
+                <strong>Title</strong>
+            </td>
+            <td style="width:10rem">
+                <strong>Rating</strong>
+            </td>
+            <td style="width:10rem">
+                <strong>Aantal gezien</strong>
+            </td>
+        </tr>
+            @for (int i = 0; i < Model.Movies.Count(); i++)
+            {
+                <tr>
+                    <td>@Model.Movies.ElementAt(i).Id )</td>
+                    <td>@Model.Movies.ElementAt(i).Titel</td>
+                    @if (@Model.Movies.ElementAt(i).Rating > 0)
+                    {
+                        <td>@Model.Movies.ElementAt(i).Rating</td>
+                    }
+                    else
+                    {
+                        <td>Nog geen rating</td>
+                    }
+                    <td>@Model.Movies.ElementAt(i).AantalGezien</td>
+                    <td><a asp-controller="Movie" asp-action="Details" asp-route-movieId="@Model.Movies.ElementAt(i).Id">Details</a></td>
+                </tr>
+            }
+        
+    </table>
+}

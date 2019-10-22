@@ -1,0 +1,57 @@
+﻿@model MediaWeb.Models.MovieModels.MovieRegisseurModels.MovieRegisseurIndexViewModel
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<hr />
+
+<strong>Add regisseur:</strong>
+<form asp-controller="MovieRegisseur" asp-action="Create" method="post">
+    <table>
+        <tr>
+            <td class="form-group">
+                <label asp-for="Naam"></label>
+                <input class="form-control" asp-for="Naam" />
+                <span class="text-danger" asp-validation-for="Naam"></span>
+            </td>
+            <td style="width:3rem"></td>
+            <td style="width:5rem"><button type="submit">Add</button></td>
+        </tr>
+    </table>
+</form>
+
+<hr />
+<strong>Regisseurs:</strong>
+
+@if (Model.ListVM.Count() == 0)
+{
+    <tr>Er zijn nog geen regisseurs.</tr>
+}
+else
+{
+    @for (int i = 0; i < Model.ListVM.Count(); i++)
+    {
+<form asp-controller="MovieRegisseur" asp-action="Edit" asp-route-id="@Model.ListVM.ElementAt(i).Id" method="post">
+    <table>
+        <tr>
+            <td style="width:3rem">@Model.ListVM.ElementAt(i).Id )</td>
+            <td class="form-group">
+                <input class="form-control" type="hidden" asp-for="@Model.ListVM.ElementAt(i).Id" />
+                <input class="form-control" asp-for="@Model.ListVM.ElementAt(i).Naam" />
+                <span class="text-danger" asp-validation-for="@Model.ListVM.ElementAt(i).Naam"></span>
+            </td>
+            <td style="width:3rem"></td>
+            <td style="width:5rem"><button type="submit">Edit</button></td>
+            <td><a asp-controller="MovieRegisseur" asp-action="Delete" asp-route-id="@Model.ListVM.ElementAt(i).Id">Delete</a></td>
+        </tr>
+
+    </table>
+</form>
+        }
+    }
+
+
+@*@if (SignInManager.IsSignedIn(User))
+    {*@
+
+@*}*@

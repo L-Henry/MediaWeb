@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MediaWeb.Models.MovieModels.MoviePlaylistModels.MoviePlaylistViewModel>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+
+@if (Model.Count() == 0)
+{
+
+    <tr><td>Er zijn nog geen playlists.</td></tr>
+}
+else
+{ 
+<table>
+    <tr>
+        <td style="width:5rem">
+            <strong>Id</strong>
+        </td>
+        <td style="width:20rem">
+            <strong>Naam</strong>
+        </td>
+        <td style="width:10rem" />
+        <td style="width:5rem" />
+        <td style="width:5rem" />
+    </tr>
+
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        <tr>
+            <td>@Model.ElementAt(i).Id )</td>
+            <td>@Model.ElementAt(i).Naam</td>
+
+            <td><a asp-controller="MoviePlaylist" asp-action="Details" asp-route-playlistId="@Model.ElementAt(i).Id">View playlist</a></td>
+
+        </tr>
+    }
+</table>
+        
+}
+
+    
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+    <p><a asp-controller="MoviePlaylist" asp-action="Create">Create playlist</a></p>
+    }
